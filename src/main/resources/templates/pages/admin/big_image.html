@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../static/css/font.css">
+		<link rel="stylesheet" href="../../static/css/weadmin.css">
+		<link rel="stylesheet" href="../../static/css/imageviewer.css">
+		<!-- <script src="../../static/js/jquery-1.12.4.js"></script> -->
+		<!-- <script src="../../static/js/jquery-2.2.4.js"></script> -->
+		<script src="../../static/js/jquery.min.js"></script>
+		<script src="../../static/js/jquery-migrate-1.2.1.min.js"></script>
+		<script src="../../static/js/jquery.xdomainrequest.min.js"></script>
+		<script type="text/javascript" src="../../static/js/imageviewer.min.js"></script>
+		<!-- <script type="text/javascript" src="../../static/js/jquery.imageView.js"></script> -->
+		<!-- <script src="../../static/js/vanilla.kinetic.js" type="text/javascript" charset="utf-8"></script> -->
+
+		
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	</head>
+	<style type="text/css">
+		/** Image gallery 3 **/
+		.pannable-image {
+		  width: 700px;
+			height: 600px;
+		}
+	</style>
+	
+	<body>
+		<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+        <a href="./list.html">首页</a>
+        <a href="./list.html">批次信息</a>
+        <a>
+          详细信息</a>
+      </span>
+			<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+				<i class="layui-icon" style="line-height:30px">刷新</i></a>
+
+				<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right" href="./list.html" title="返回">
+					<i class="layui-icon" style="line-height:30px">返回</i></a>
+
+					<select name="productList" lay-verify="required" id="showModeSelect" class="layui-btn layui-btn-sm" onchange="switch_show_mode(this)" style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right;font-size:16px">
+						<option value="0" style="line-height:30px; font-size:16px">缩略图3列</option>
+						<option value="1" style="line-height:30px; font-size:16px">缩略图4列</option>
+						<option value="2" style="line-height:30px; font-size:16px">缩略图5列</option>
+						<option value="3" style="line-height:30px; font-size:16px">详细图</option>
+						<option value="4" selected = "selected" style="line-height:30px; font-size:16px">大图</option>
+				</select>
+
+	
+		</div>
+		<div class="weadmin-body">
+		
+
+		<div class="layui-container">
+	
+			<p style="text-align:center;font-size: 26px" id='page_info'>批次：123456 产品名称：11</p>
+		
+
+			</div>
+
+
+			<div class="layui-container" id="detail" style="text-align: center">
+
+					<div style="position: relative"  >
+						<img  id="detailimg" src="" data-high-res-src=""   class="pannable-image"/>
+
+						<span id="detailimgspan" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+					</div>	
+				</div>
+				
+			<div id="page" class="page"></div>
+		
+		</div>
+
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+    	<script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+				<script type="text/javascript">
+//			layui扩展模块的两种加载方式-示例
+//		    layui.extend({
+//			  admin: '{/}../../static/js/admin' // {/}的意思即代表采用自有路径，即不跟随 base 路径
+//			});
+//			//使用拓展模块
+			var loc = location.href;
+			var n1 = loc.length;//地址的总长度
+			var n2 = loc.indexOf("=");//取得=号的位置
+			//var batchno = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+      var batchno=getParam('batchno');
+			var mode=getParam('mode');
+			$('#page_info').html('批次：'+batchno);
+			var cur_page=1;
+			var total_count=1;
+			var cur_page=1;
+			var total_count=1;
+
+	
+	
+			layui.use('laypage', function(){
+			  var laypage = layui.laypage;
+				var $$ = layui.jquery;
+				
+			  		jQuery.support.cors = true; 
+						$.ajax({url:"http://localhost:9091/getallbatchnodetail",
+						  data:{"batchno":batchno},
+							type:"POST",
+					    
+							success:function (resText) {
+								   total_count=resText;
+									 
+								   laypage.render({
+										elem: 'page'
+										,count: resText
+										,limit:1
+										,jump: function(obj){
+                                        //模拟渲染
+                     show_mode_detail(obj.curr);
+										
+										}
+									});
+							},
+							error:function(jqXHR){
+								alert("发生错误"+jqXHR.status);
+								}
+						});
+
+
+						//$('.pannable-image').ImageViewer();
+
+						document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+//          keycode 37 左箭头 38 上箭头  39右箭头  40 下箭头
+						e.stopPropagation();
+            if (e && e.keyCode == 37) {  
+                //要做的事情
+								//alert(1);
+								laypage.render({
+										elem: 'page'
+										,count: total_count
+										,limit:9
+										,curr:cur_page-1
+										,jump: function(obj){
+										//模拟渲染
+										  cur_page=obj.curr;
+                      show_mode_detail(obj.curr);
+										}
+									});
+
+            }
+            if (e && e.keyCode == 38) { 
+                //要做的事情
+                //alert(2);
+								laypage.render({
+										elem: 'page'
+										,count: total_count
+										,limit:9
+										,curr:cur_page+1
+										,jump: function(obj){
+										//模拟渲染
+										  cur_page=obj.curr;
+                      show_mode_detail(obj.curr);
+										}
+									});
+            }
+            if (e && e.keyCode == 39) { 
+                //要做的事情
+								//alert(3);
+								laypage.render({
+										elem: 'page'
+										,count: total_count
+										,limit:9
+										,curr:cur_page+1
+										,jump: function(obj){
+										//模拟渲染
+										  cur_page=obj.curr;
+                      show_mode_detail(obj.curr);
+										}
+									});
+            }
+						if (e && e.keyCode == 40) { 
+                //要做的事情
+								//alert(4);
+								laypage.render({
+										elem: 'page'
+										,count: total_count
+										,limit:9
+										,curr:cur_page-1
+										,jump: function(obj){
+										//模拟渲染
+										  cur_page=obj.curr;
+											show_mode_detail(obj.curr);
+										}
+									});
+            }
+        }; 
+		
+			});
+
+
+
+/*			var $$ = layui.jquery;
+
+			jQuery.support.cors = true; 
+			$.ajax({url:"http://localhost:9091/getbatchnodetail",
+				type:"POST",
+				data:batchno,
+				success:function (resText) {
+					for(var i=1;i<=resText.length;i++)
+					{
+						var imgid="#img"+i;
+						var spanid="#span"+i;
+						$(imgid).attr('src',resText[i]);
+						$(spanid).html(resText[i]);
+					}
+				},
+				error:function(jqXHR){
+					alert("发生错误"+jqXHR.status);
+					}
+			});*/
+
+			layui.config({
+			   path: '/res/layer/'
+			  
+			}).use('layer');
+
+			function getParam(paramName) { 
+				var reg = new RegExp('(^|&)' + paramName + '=([^&]*)(&|$)', 'i');
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) {
+				return unescape(r[2]);
+				}
+				return null;
+}
+		
+			function show_mode_detail(page)
+			{
+				$('#image_table').css('display','none');
+				$('#table_detail').css('display','none');	
+				$('#detail').css('display','inline-block');
+						
+			
+				layui.use(['layer','jquery'], function(){
+					var $ = layui.jquery;
+				var layer = layui.layer;
+						
+						
+						jQuery.support.cors = true; 
+						$.ajax({url:"http://localhost:9091/getbatchnodetail",
+							type:"POST",
+							data:{"batchno":batchno,"page":page,"limit":1},
+							success:function (resText) {
+								// for(var i=1;i<=resText.length;i++)
+								if(resText.length>0)
+								{
+									// $('#detailimg').attr('src',(resText[0]));
+									// $('#detailimg').attr('data-high-res-src',(resText[0]));
+
+									// $('#detailimg').attr('src','http://localhost:9091/getimage?filename='+(resText[0]));
+									// $('#detailimg').attr('data-high-res-src','http://localhost:9091/getimage?filename='+(resText[0]));
+									
+									$('#detailimgspan').html(decodeURI(resText[0]));
+
+									var viewer = ImageViewer($('.pannable-image'));
+								
+									viewer.load('http://localhost:9091/getimage?filename='+encodeURI(resText[0]), 'http://localhost:9091/getimage?filename='+encodeURI(resText[0]));
+									
+								  
+								}
+							
+							},
+							error:function(jqXHR){
+								alert("发生错误"+jqXHR.status);
+								}
+						});
+	
+			 })
+
+			
+			}
+	
+	// 重新初始化laypage，n为 列数，
+			function render_laypage(n)
+			{
+				layui.use('laypage', function(){
+			  var laypage = layui.laypage;
+				var table_width=$("#image_table").width();
+						var img_width=table_width/n;
+						var window_height=window.innerHeight-150;
+						var row=Math.ceil(window_height/img_width);
+						laypage.render({
+												elem: 'page'
+												,count: total_count
+												,limit:row*n
+												,jump: function(obj){
+												//模拟渲染
+												show_mode_thumbnail(n,obj.curr);
+												}
+											});
+				}
+				);
+
+
+			
+			}
+
+
+			//显示缩略图，n为列数，page_为第几页
+
+			function show_mode_thumbnail(n,page_)
+			{
+			
+				$('#table_detail').css('display','none');
+				$('#image_table').css('display','block');
+				$('#detail').empty();
+
+				$('#image_table').children('tbody').empty();
+				var str="";
+				var table_width=$("#image_table").width();
+				var img_width=table_width/n;
+				var window_height=window.innerHeight-150;
+				var row=Math.ceil(window_height/img_width);
+	
+
+				for (var i = 0; i < row; i++) { //循环遍历
+					str +="<tr style='border:10px'>";
+			
+					for(var j=0;j<n;j++)
+					{
+					
+						var id=i*n+j+1;
+						var imgid="img"+id;
+						var spanid="span"+id;
+						 str+="	<td style='width:"+img_width+"px;height:"+img_width+"px'>\n\
+							<div style='position: relative'>\n\
+							<img id='"+imgid+"' src=''  style='width:"+img_width+"px;height:"+img_width+"px' onclick='detailLayer(this)'/>\n\
+							<span id='"+spanid+"' style='position: absolute; top: 0; left: 0;color:red'></span>\n\
+							</div>\n\
+						</td>"
+					}
+					str += "</tr>";	
+				}
+				$('#image_table').children('tbody').append(str);
+								
+				layui.use(['layer','jquery'], function(){
+				  var $ = layui.jquery;
+				  var layer = layui.layer;
+					
+						
+						jQuery.support.cors = true; 
+						$.ajax({url:"http://localhost:9091/getbatchnodetail",
+							type:"POST",
+							data:{"batchno":batchno,"page":page_,"limit":n*row},
+							success:function (resText) {
+								for(var i=1;i<=resText.length;i++)
+								{
+									var imgid="#img"+i;
+									var spanid="#span"+i;
+									$(imgid).attr('src',resText[i-1]);
+									$(spanid).html(decodeURI(resText[i-1]));
+								
+								}
+							
+							},
+							error:function(jqXHR){
+								alert("发生错误"+jqXHR.status);
+								}
+						});
+	
+			 })
+			}
+
+			function show_mode_list()
+			{
+				$('#table_detail').css('display','block');
+				$('#image_table').css('display','none');		
+				$('#detail').empty();	
+				layui.use(['layer','jquery'], function(){
+				 var $ = layui.jquery;
+				 var layer = layui.layer;
+						
+						
+						jQuery.support.cors = true; 
+						$.ajax({url:"http://localhost:9091/getbatchnodetail",
+							type:"POST",
+							data:{"batchno":batchno,"page":1,"limit":9},
+							success:function (resText) {
+								for(var i=1;i<=resText.length;i++)
+								{
+									$('#detailimg').attr('src',resText[0]);
+									$('#detailimgspan').html(decodeURI(resText[0]));
+									
+								}
+							
+							},
+							error:function(jqXHR){
+								alert("发生错误"+jqXHR.status);
+								}
+						});
+	
+			 })
+			}
+
+			//切换显示模式
+			function switch_show_mode(obj)
+			{
+					switch(obj.value)
+					{
+                        case "0":
+                        window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode="+0;
+						
+						//show_mode_thumbnail(3,1);
+						break;
+						case "1":
+                        window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode="+1;
+						//show_mode_thumbnail(4,1);
+						break;
+						case "2":
+                        window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode="+2;
+						//show_mode_thumbnail(5,1);
+						break;
+						case "3":
+                        window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode="+3;
+						break;
+						case "4":
+						show_mode_detail(1);
+
+						break;
+						
+					}
+			}
+
+		</script>
+	</body>
+
+</html>

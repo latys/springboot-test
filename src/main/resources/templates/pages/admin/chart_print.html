@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+
+  <script src="../../static/js/echarts.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="../../static/js/jquery.min.js"></script>
+  <script src="../../static/js/jquery-migrate-1.2.1.min.js"></script>
+  <script src="../../static/js/jquery.jqprint-0.3.js"></script>
+  <script src="../../static/js/jquery.xdomainrequest.min.js"></script>
+
+  <style type="text/css">
+    
+    .page-break {        
+        page-break-before: auto;        
+        page-break-after: always;
+    }
+    
+    </style>
+
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+</head>
+
+<body>
+  <div class="weadmin-nav">
+    <span class="layui-breadcrumb">
+      <a href="./chart-sample.html">首页</a>
+      <a href="./chart-sample.html">统计信息</a>
+      <a>
+        统计信息</a>
+    </span>
+    <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
+      href="javascript:location.replace(location.href);" title="刷新">
+      <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+  </div>
+  <div class="weadmin-body">
+
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">起始时间</label>
+          <div class="layui-input-inline">
+            <input class="layui-input " placeholder="开始日" name="start" id="start">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-inline">
+            <input class="layui-input " placeholder="截止日" name="end" id="end">
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">冠字</label>
+          <div class="layui-input-inline">
+            <input type="text" name="GZ" id="GZ" required lay-verify="required" placeholder="冠字" autocomplete="off"
+              class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">第一冠字位置</label>
+          <div class="layui-input-inline">
+            <select name="firstGZPos" id="firstGZPos" lay-verify="required" disabled="disabled">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">第二冠字位置</label>
+          <div class="layui-input-inline">
+            <select name="SecondGZPos" id="secondGZPos" lay-verify="required" disabled="disabled">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">起始号码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="startCode" id="startCode" required lay-verify="required" placeholder="起始号码"
+              autocomplete="off" class="layui-input">
+
+          </div>
+
+          <label class="layui-form-mid layui-word-aux">千</label>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">打印千数[500张]</label>
+          <div class="layui-input-inline">
+            <input type="text" name="printCount" id="printCount" required lay-verify="required" placeholder=""
+              autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <!-- <div class="layui-form-item">
+                        <label class="layui-form-label">起始号码</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="startCode" id="startCode" required  lay-verify="required" placeholder="起始号码" autocomplete="off" class="layui-input">
+                          
+                        </div>
+                        
+                        <label class="layui-form-mid layui-word-aux" >千</label>
+                        
+                </div>
+                <div class="layui-form-item">
+                        <label class="layui-form-label">打印千数[500张]</label>
+                        <div class="layui-input-block">
+                          <input type="text" name="printCount" id="printCount" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                        
+                </div> -->
+
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="formDemo" onclick="GenPrintContent()">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="layui-row">
+      <form class="layui-form layui-col-md12 we-search">
+
+        <!--<div class="layui-inline">
+                            <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                        </div>-->
+
+        <button class="layui-btn" lay-submit="" lay-filter="sreach" onclick="printpage('to_print')">打印</button>
+
+      </form>
+    </div>
+
+
+
+  </div>
+
+  <div id="to_print" style="margin-left: 30px;display: none;page-break-after:always">
+    <div class="layui-row">
+      <h3 id="print_header">密特四号机电子护照因私号码在线检测</h1>
+    </div>
+    <div class="layui-row" style="padding-top: 40px">
+      <p id="print_time">打印时间：2019-03-01--2019-03-02</p>
+
+    </div>
+
+    <div class="layui-row" id="print_content" class="page-break" style="padding-top: 40px">
+
+
+    </div>
+
+
+  </div>
+  <script type="text/javascript">
+
+    var machineNO;
+    var machineName;
+    var firstGZPos;
+    var secondGZPos;
+    var pageHight=700;
+
+    function printpage(myDiv) {
+      var newstr = document.getElementById(myDiv).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = newstr;
+      window.print();
+
+      document.body.innerHTML = oldstr;
+     
+    }
+
+    function addData(kwx) {
+      var table = layui.table;
+      table.render({
+        elem: '#tbCheckResult'
+        , url: 'http://localhost:9091/showdata'
+        , cellMinWidth: 150
+        , limit: 10 //默认为10
+        , cols: [[
+          { type: 'checkbox', fixed: 'left' }
+          , { field: 'batchno', title: '批次', sort: true } //sort：true页面可进行排序操作
+          , { field: 'totalCount', title: '总数' }
+          , { field: 'errCount', title: '缺陷数', sort: true }
+          , { fixed: 'right', align: 'center', toolbar: '#barDemo' }
+
+        ]]
+        , page: true
+        , done: function (res, curr, count) {
+          //数据的回调用，可不写
+        }
+      });
+    }
+
+
+
+    $(function () {
+      layui.use(['table', 'form'], function () {
+        var form = layui.form;
+        $(".layui-form-label").css("width", 110);
+        getConf();
+        
+        form.on('submit(formDemo)', function (data) {
+
+          console.log(data.elem)                                 //被执行事件的元素DOM对象，一般为button对象
+
+          console.log(data.form)                                 //被执行提交的form对象，一般在存在form标签时才会返回
+
+          console.log(data.field)                                 //当前容器的全部表单字段，名值对形式：{name: value}
+
+          return false;                                                //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+
+
+      });
+    });
+
+
+
+
+
+    function getConf() {
+      layui.use(['table', 'form'], function () {
+        jQuery.support.cors = true;
+        var form = layui.form;
+        $.ajax({
+          url: "http://localhost:9091/getConf",
+          type: "POST",
+
+          success: function (resText) {
+            firstGZPos = resText.firstGZPos;
+            secondGZPos = resText.secondGZPos;
+
+            $("option[value='已完成']").attr("selected", "selected");
+            $("#firstGZPos").val(firstGZPos);
+            $('#secondGZPos').val(secondGZPos);
+            form.render();
+
+          },
+          error: function (jqXHR) {
+            alert("发生错误" + jqXHR.status);
+          }
+        });
+      });
+   }
+
+
+    // 基于准备好的dom，初始化echarts实例
+    function info(batchno) {
+      window.location.href = "detail.html?" + "batchno=" + encodeURI(batchno);
+    }
+
+
+
+
+    function GenPrintContent() {
+      var startDate = $('#start').val();
+      var endDate = $('#end').val();
+      var gz = $('#GZ').val();
+      var firstGZPos = $('#firstGZPos').val();
+      var SecondGZPos = $('#secondGZPos').val();
+      var startCode = $('#startCode').val();
+      var count = $('#printCount').val();
+      var endCode =parseInt(startCode) + $('#printCount').val() * 500 - 1;
+      if (startCode < 0 || endCode > 99999999) {
+        alert("打印起始号码设置错误!");
+        return;
+      }
+      if (count < 1 || count > 20) {
+        alert("打印千数不符合要求!");
+        return;
+      }
+
+      jQuery.support.cors = true;
+      $.ajax({
+        url: "http://localhost:9091/GenPrintContent",
+        type: "POST",
+        data: { "startDate": startDate, "endDate": endDate, "GZ": gz, "firstGZPos": firstGZPos, "secondGZPos": SecondGZPos, "startCode": startCode, "printCount": count },
+        success: function (resText) {
+          $("#print_content").empty();
+          var str = "";
+          var i=1;
+          var page=1;
+          var line=1;
+          var total_page=1;
+          for ( i = 1; i <= resText.length; i++) {
+
+            if(line>=25)
+            {
+              line=1;
+              str+="<br></br>";
+              str+="<br></br>";
+              str+="<p>----第 "+page+" ----页 共----"+total_page+"-----页";
+              str+="<br></br>";
+              str+="<br></br>";
+              str+="</div>";
+
+              var page_id="page_"+page;
+              str+="<div class='page-break' id='"+page_id+"'>";
+              page++;
+
+            }
+            if (i == 1) {
+              $("#print_header").html(resText[i - 1]);
+            }
+            if (i == 2) {
+              $("#print_time").html(resText[i - 1]);
+            }
+            if (i > 2) {
+              if (resText[i - 1].indexOf("开始号码") >= 0)
+              {
+                
+                
+                line=1;
+                if(i!=3)
+                {
+                  str+="<br></br>";
+                  str+="<br></br>";
+                  str+="<p>----第 "+page+" ----页 共----"+total_page+"-----页";
+                  str+="<br></br>";
+                  str+="<br></br>";
+                  str+="</div>";
+                }
+                
+                var j=i;
+                for( j=i;j<resText.length;j++)
+                {
+                  if (resText[j].indexOf("开始号码") >= 0)
+                  {
+                      break;
+                  }
+                }
+                total_page=Math.ceil((j-i)/25.0);
+                
+                var page_id="page_"+page;
+                str+="<div class='page-break' id='"+page_id+"'>";
+                page=1;
+                
+              }
+
+              if (resText[i - 1].indexOf("未打印号码范围") >= 0 || resText[i - 1].indexOf("检测结果") >= 0) {
+
+                str += "<p style='padding-top: 40px'>" + resText[i - 1] + "</p>";
+              }
+
+              else {
+                str += "<p>" + resText[i - 1] + "</p>";
+              }
+
+            }
+
+            line++;
+
+          }
+
+          if(i>3)
+          {
+            str+="<br></br>";
+            str+="<br></br>";
+            str+="<p>----第 "+page+" ----页 共----"+total_page+"-----页";
+            str+="<br></br>";
+            str+="<br></br>";
+            str+="</div>";
+          }
+
+          $("#print_content").append(str);
+
+          layui.use(['layer', 'jquery'], function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            $('#to_print').css('display', 'block');
+            layer.open({
+              type: 1,
+              area: '700px',
+              title: '打印预览',
+              content: $('#to_print'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+              btn: ['打印', '取消']
+              , yes: function (index, layero) {
+                //按钮【按钮一】的回调
+                printpage('to_print');
+
+                layer.close(index);
+                $('#to_print').css('display', 'none');
+               
+              }
+              , btn2: function (index, layero) {
+                $('#to_print').css('display', 'none');
+              }
+              , cancel: function (index, layero) {
+                $('#to_print').css('display', 'none');
+
+              }
+            });
+            layer.full();
+          })
+
+        },
+        error: function (jqXHR) {
+          alert("发生错误" + jqXHR.status);
+        }
+      });
+    }
+
+  </script>
+
+
+
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

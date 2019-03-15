@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<link rel="stylesheet" href="../../static/css/imageviewer.css">
+	<!-- <script src="../../static/js/jquery-1.12.4.js"></script> -->
+	<!-- <script src="../../static/js/jquery-2.2.4.js"></script> -->
+	<script src="../../static/js/jquery.min.js"></script>
+	<script src="../../static/js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="../../static/js/jquery.xdomainrequest.min.js"></script>
+	<script type="text/javascript" src="../../static/js/imageviewer.min.js"></script>
+	<!-- <script src="../../static/js/vanilla.kinetic.js" type="text/javascript" charset="utf-8"></script> -->
+
+
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+</head>
+<style type="text/css">
+	/** Image gallery 3 **/
+	.pannable-image {
+		width: 700px;
+	}
+</style>
+
+<body>
+	<div class="weadmin-nav">
+		<span class="layui-breadcrumb">
+			<a href="./list.html">首页</a>
+			<a href="./list.html">批次信息</a>
+			<a>
+				详细信息</a>
+		</span>
+		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right"
+			href="javascript:location.replace(location.href);" title="刷新">
+			<i class="layui-icon" style="line-height:30px">刷新</i></a>
+
+		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right"
+			href="./list.html" title="返回">
+			<i class="layui-icon" style="line-height:30px">返回</i></a>
+
+		<select name="productList" lay-verify="required" id="showModeSelect" class="layui-btn layui-btn-sm"
+			onchange="switch_show_mode(this)"
+			style="line-height:1.6em;margin-top:3px;margin-left:2px;float:right;font-size:16px">
+			<option value="0" style="line-height:30px; font-size:16px">缩略图3列</option>
+			<option value="1" style="line-height:30px; font-size:16px">缩略图4列</option>
+			<option value="2" style="line-height:30px; font-size:16px">缩略图5列</option>
+			<option value="3" style="line-height:30px; font-size:16px">详细图</option>
+			<option value="4" style="line-height:30px; font-size:16px">大图</option>
+		</select>
+
+
+	</div>
+	<div class="weadmin-body">
+
+
+		<div class="layui-container">
+
+			<p style="text-align:center;font-size: 26px" id='page_info'>批次：123456 产品名称：11</p>
+
+			<!-- <div id="wrapper">
+			<div id="inner">
+				<img src="D:\\图像\\7_0_123_110640871.bmp" alt="wembley stadium"/>
+			</div>
+		</div> -->
+			<table border="8" cellspacing="20" id="image_table" style='background: #ffffff'>
+				<tbody>
+
+				</tbody>
+
+				<!-- <tr style="border:10px">
+						
+						<td>
+							<div style="position: relative">
+							<img id="img1" src="" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span1" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>
+
+						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img2" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span2" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img3" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span3" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>						</td>
+						
+					</tr>
+
+						<tr style="border:10px">
+						
+						<td>
+							<div style="position: relative">
+							<img id="img4" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span4" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>	
+						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img5" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span5" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>							
+						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img6" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span6" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>	
+						</td>
+						
+					</tr>
+
+						<tr style="border:10px">
+						
+						<td>
+							<div style="position: relative">
+							<img id="img7" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" usemap="#planetmap" onclick="detailLayer(this)"/>
+							<span id="span7" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+
+							</div>	
+						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img8" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span8" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>							
+						</td>
+						<td>
+							<div style="position: relative">
+							<img id="img9" src="D:\\图像\\7_0_123_110640871.bmp" style="width:300px;height:300px" onclick="detailLayer(this)"/>
+							<span id="span9" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+							</div>	
+						</td>
+						
+					</tr> -->
+
+
+
+			</table>
+		</div>
+		<!--<div class="page">
+				<div>
+					<a class="prev" href="">&lt;&lt;</a>
+					<a class="num" href="">1</a>
+					<span class="current">2</span>
+					<a class="num" href="">3</a>
+					<a class="num" href="">489</a>
+					<a class="next" href="">&gt;&gt;</a>
+				</div>
+			</div>-->
+		<!-- <div class="layui-container"  >
+
+				<div style="position: relative"  >
+					<img   src="D:\\图像\\7_0_123_110640871.bmp" data-high-res-src="D:\\图像\\7_0_123_110640871.bmp"   class="pannable-image"/>
+
+								<span id="detailimgspan" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+				</div>	
+			</div> -->
+
+		<div class="layui-container" id="detail">
+
+			<!-- <div style="position: relative"  >
+						<img  id="detailimg" src="D:\\图像\\7_0_123_110640871.bmp" data-high-res-src="D:\\图像\\7_0_123_110640871.bmp"   class="pannable-image"/>
+
+						<span id="detailimgspan" style="position: absolute; top: 0; left: 0;color:red">1234</span>
+					</div>	 -->
+		</div>
+
+
+		<table class="layui-table " id="table_detail" style="display:none">
+			<colgroup>
+				<col width="30">
+				<col width="50">
+				<col width="200">
+				<col width="300">
+				<col width="500">
+				<col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>
+						<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i>
+						</div>
+					</th>
+					<th>ID</th>
+					<th>图像</th>
+					<th>缺陷类型</th>
+					<th>缺陷描述</th>
+					<th>严重等级</th>
+				</tr>
+
+
+			</thead>
+			<tbody>
+				<!-- <tr>
+						<td>
+							<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+						</td>
+						<td>1</td>
+						<td>
+								<img  id="detailimg1" src="D:\\图像\\7_0_123_110640871.bmp">
+						</td>
+						<td>123456</td>
+						<td>1000</td>
+						<td>900</td>
+				
+						
+				
+					</tr>
+
+					<tr>
+							<td>
+								<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+							</td>
+							<td>1</td>
+							<td>
+									<img  id="detailimg1" src="D:\\图像\\7_0_123_110640871.bmp">
+							</td>
+							
+							<td>123456</td>
+							<td>1000</td>
+							<td>900</td>
+						
+							
+					
+						</tr>
+
+						<tr>
+								<td>
+									<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+								</td>
+								<td>1</td>
+								<td>
+										<img  id="detailimg1" src="D:\\图像\\7_0_123_110640871.bmp">
+								</td>
+								<td>123456</td>
+								<td>1000</td>
+								<td>900</td>
+						
+								
+						
+							</tr> -->
+
+			</tbody>
+		</table>
+
+
+		<div id="page" class="page"></div>
+
+	</div>
+
+
+
+
+
+
+
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//			layui扩展模块的两种加载方式-示例
+		//		    layui.extend({
+		//			  admin: '{/}../../static/js/admin' // {/}的意思即代表采用自有路径，即不跟随 base 路径
+		//			});
+		//			//使用拓展模块
+		var loc = location.href;
+		var n1 = loc.length;//地址的总长度
+		var n2 = loc.indexOf("=");//取得=号的位置
+		//var batchno = decodeURI(loc.substr(n2+1, n1-n2));//从=号后面的内容
+		var batchno = decodeURI(getParam('batchno'));
+		var mode = decodeURI(getParam('mode'));
+		$('#page_info').html('批次：' + batchno);
+		var cur_page = 1;
+		var total_count = 1;
+
+		// 	var ifBool = false;
+		// document.body.parentNode.style.overflow = "hidden";
+		// window.addEventListener("mousemove", imgMove);
+		// window.addEventListener("mouseup", imgEnd);
+		// function imgStart(e) {
+		//     e.stopPropagation();
+		//     ifBool = true;
+		// }
+		// function imgMove(e) {
+		//     if (ifBool) {
+		//         var prevewImg = document.querySelector("#detailimg");
+		//         var clientHeight = document.documentElement.clientHeight;
+		//         var clientWidth = document.documentElement.clientWidth;
+		//         if (prevewImg.offsetHeight > clientHeight) {
+		//             var topPosition = prevewImg.offsetHeight / 2;
+		//             var bottomPosition = -(prevewImg.offsetHeight / 2) + clientHeight;
+		//             var moveTop = (bottomPosition < e.clientY && topPosition > e.clientY) ? e.clientY : ((bottomPosition < e.clientY) ? topPosition : bottomPosition);
+		//             prevewImg.style.top = moveTop + "px"
+		//         }
+		//         if (prevewImg.offsetWidth > clientWidth) {
+		//             var leftPosition = prevewImg.offsetWidth / 2;
+		//             var rightPosition = -(prevewImg.offsetWidth / 2) + clientWidth;
+		//             var moveLeft = (rightPosition < e.clientX && leftPosition > e.clientX) ? e.clientX : ((leftPosition < e.clientX) ? leftPosition : rightPosition);
+		//             prevewImg.style.left = moveLeft + "px";
+		//         }
+		//     }
+		// }
+		// function imgEnd() {
+		//     ifBool = false
+		// }
+
+		// $('.layui-table').css('background-color','#5B5B5B');
+		// $('.layui-table').css('color','#fff');
+		// $('tr').css('background-color','#5B5B5B');
+		// $('tr').css('color','#fff');
+
+		// $('tr').hover(function(){
+		// 	$('tr').css('background-color','#272727');
+		// })
+
+
+		layui.use('laypage', function () {
+			var laypage = layui.laypage;
+			var $$ = layui.jquery;
+
+			jQuery.support.cors = true;
+			$.ajax({
+				url: "http://localhost:9091/getallbatchnodetail",
+				data:{"batchno":batchno},
+				type: "POST",
+
+				success: function (resText) {
+					total_count = resText;
+					switch (mode) {
+						case '0':
+							render_laypage(3);
+							break;
+						case '1':
+							render_laypage(4);
+							break;
+						case '2':
+							render_laypage(5);
+							break;
+						case '3':
+							render_list_laypage(30);
+							break;
+						default:
+							render_laypage(3);
+							break;
+					}
+
+					//  laypage.render({
+					// 	elem: 'page'
+					// 	,count: resText
+					// 	,limit:9
+					// 	,jump: function(obj){
+					// 	//模拟渲染
+
+					// 	}
+					// });
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+		});
+
+
+		function getParam(paramName) {
+			var reg = new RegExp('(^|&)' + paramName + '=([^&]*)(&|$)', 'i');
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) {
+				return unescape(r[2]);
+			}
+			return null;
+		}
+
+
+		function zoom_img(obj) {
+			var zoom = parseInt(obj.style.zoom, 10) || 100;
+			zoom += event.wheelDelta / 12;
+			if (zoom > 0) {
+				obj.style.zoom = zoom + '%'; //重新设置比例 
+				return false;
+			}
+		}
+
+		function showdata(obj) {
+			jQuery.support.cors = true;
+			$.ajax({
+				url: "http://localhost:9091/getErrDetail",
+				type: "POST",
+				data: { "batchno": batchno, "page": obj.curr, "limit": 9 },
+				success: function (resText) {
+					for (var i = 1; i <= resText.length; i++) {
+						var imgid = "#img" + i;
+						var spanid = "#span" + i;
+						$(imgid).attr('src', 'http://localhost:9091/getimage?filename=' +encodeURI(resText[i - 1].imageName)+'&errLocation='+encodeURI(resText[i-1].errlocation));
+						$(spanid).html(resText[i - 1].imageName);
+					}
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+		}
+
+
+		/*			var $$ = layui.jquery;
+		
+					jQuery.support.cors = true; 
+					$.ajax({url:"http://localhost:9091/getbatchnodetail",
+						type:"POST",
+						data:batchno,
+						success:function (resText) {
+							for(var i=1;i<=resText.length;i++)
+							{
+								var imgid="#img"+i;
+								var spanid="#span"+i;
+								$(imgid).attr('src',resText[i]);
+								$(spanid).html(resText[i]);
+							}
+						},
+						error:function(jqXHR){
+							alert("发生错误"+jqXHR.status);
+							}
+					});*/
+
+		layui.config({
+			path: '/res/layer/'
+
+		}).use('layer');
+
+		function detailLayer(obj) {
+			$('#detailimg').attr('src', obj.src);
+			$('#detailimg').attr('rel', obj.src);
+			$('#detailimgspan').html(decodeURI(obj.src));
+			layui.use(['layer', 'jquery'], function () {
+				var $ = layui.jquery;
+				var layer = layui.layer;
+				$('#detailimg').css('display', 'block');
+				layer.open({
+					type: 1,
+					area: '700px',
+					title: false,
+					content: $('#detail'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+					cancel: function (index, layero) {
+						$('#detailimg').css('display', 'none');
+						$('#detailimg').css('zoom', '100%');
+					}
+				});
+				layer.full();
+			})
+		}
+
+		function show_mode_detail() {
+			$('#image_table').css('display', 'none');
+			$('#table_detail').css('display', 'none');
+			$('#detail').css('display', 'inline-block');
+
+			$('.pannable-image').ImageViewer();
+			layui.use(['layer', 'jquery'], function () {
+				var $ = layui.jquery;
+				var layer = layui.layer;
+
+
+				jQuery.support.cors = true;
+				$.ajax({
+					url: "http://localhost:9091/getErrDetail",
+					type: "POST",
+					data: { "batchno": batchno, "page": 1, "limit": 1 },
+					success: function (resText) {
+						// for(var i=1;i<=resText.length;i++)
+						if (resText.length > 0) {
+							// 				var htmlstr="";
+							// 				htmlstr+="<div style='position: relative' >\
+							// 	<img  id='detailimg' src='' data-high-res-src=''   class='pannable-image'/>\
+							// 	<span id='detailimgspan' style='position: absolute; top: 0; left: 0;color:red'>1234</span>\
+							// </div>	";
+							// $('#detail').append(htmlstr);
+
+							$('#detailimg').attr('src', decodeURI(resText[i - 1].imageName));
+							$('#detailimg').attr('data-high-res-src', decodeURI(resText[i - 1].imageName));
+
+							$('#detailimgspan').html(decodeURI(resText[i - 1].imageName));
+
+						}
+
+					},
+					error: function (jqXHR) {
+						alert("发生错误" + jqXHR.status);
+					}
+				});
+
+			})
+		}
+
+		// 重新初始化laypage，n为 列数，
+		function render_laypage(n) {
+			layui.use('laypage', function () {
+				var laypage = layui.laypage;
+				var table_width = $("#image_table").width();
+				var img_width = table_width / n;
+				var window_height = window.innerHeight - 150;
+				var row = Math.ceil(window_height / img_width);
+				laypage.render({
+					elem: 'page'
+					, count: total_count
+					, limit: row * n
+					, jump: function (obj) {
+						//模拟渲染
+						show_mode_thumbnail(n, obj.curr);
+					}
+				});
+			}
+			);
+
+
+
+		}
+
+		//初始化列表显示模式laypage
+		function render_list_laypage(n) {
+			layui.use('laypage', function () {
+				var laypage = layui.laypage;
+
+				laypage.render({
+					elem: 'page'
+					, count: total_count
+					, limit: n
+					, jump: function (obj) {
+						//模拟渲染
+						show_mode_list(n, obj.curr);
+					}
+				});
+			}
+			);
+
+
+
+		}
+
+		//显示缩略图，n为列数，page为第几页
+
+		function show_mode_thumbnail(n, page) {
+
+			$('#table_detail').css('display', 'none');
+			$('#image_table').css('display', 'block');
+			$('#detail').empty();
+
+			$('#image_table').children('tbody').empty();
+			var str = "";
+			var table_width = $("#image_table").width();
+			var img_width = table_width / n;
+			var window_height = window.innerHeight - 150;
+			var row = Math.ceil(window_height / img_width);
+
+
+			for (var i = 0; i < row; i++) { //循环遍历
+				str += "<tr style='border:10px'>";
+
+				for (var j = 0; j < n; j++) {
+
+					var id = i * n + j + 1;
+					var imgid = "img" + id;
+					var spanid = "span" + id;
+					str += "	<td style='width:" + img_width + "px;height:" + img_width + "px'>\n\
+							<div style='position: relative'>\n\
+							<img id='"+ imgid + "' src=''  style='width:" + img_width + "px;height:" + img_width + "px' onclick='detailLayer(this)'/>\n\
+							<span id='"+ spanid + "' style='position: absolute; top: 0; left: 0;color:red'></span>\n\
+							</div>\n\
+						</td>"
+				}
+				str += "</tr>";
+			}
+			$('#image_table').children('tbody').append(str);
+
+			layui.use(['layer', 'jquery'], function () {
+				var $ = layui.jquery;
+				var layer = layui.layer;
+
+
+				jQuery.support.cors = true;
+				$.ajax({
+					url: "http://localhost:9091/getErrDetail",
+					type: "POST",
+					data: { "batchno": batchno, "page": page, "limit": n * row },
+					success: function (resText) {
+						for (var i = 1; i <= resText.length; i++) {
+							var imgid = "#img" + i;
+							var spanid = "#span" + i;
+							//$(imgid).attr('src',resText[i-1]);
+							
+							$(imgid).attr('src', 'http://localhost:9091/getimage?filename=' + encodeURI(resText[i - 1].imageName)+'&errLocation='+encodeURI(resText[i-1].errlocation));
+							$(spanid).html(decodeURI(resText[i - 1].imageName));
+
+						}
+
+					},
+					error: function (jqXHR) {
+						alert("发生错误" + jqXHR.status);
+					}
+				});
+
+			})
+		}
+
+		function show_mode_list(n, page) {
+			$('#table_detail').css('display', 'block');
+			$('#image_table').css('display', 'none');
+			$('#detail').empty();
+			layui.use(['layer', 'jquery'], function () {
+				var $ = layui.jquery;
+				var layer = layui.layer;
+				jQuery.support.cors = true;
+				$.ajax({
+					url: "http://localhost:9091/getErrDetail",
+					type: "POST",
+					data: { "batchno": batchno, "page": page, "limit": n },
+					success: function (resText) {
+						show_table(resText);
+					},
+					error: function (jqXHR) {
+						alert("发生错误" + jqXHR.status);
+					}
+				});
+
+			})
+		}
+
+
+		function show_table(obj) {
+			$('#table_detail').children('tbody').empty();
+
+			var str = "";
+			for (var i = 1; i <= obj.length; i++) {
+                str += "<tr>\
+						<td>\
+							<div class='layui-unselect layui-form-checkbox' lay-skin='primary' data-id='2'><i class='layui-icon'>&#xe605;</i></div>\
+						</td>\
+						<td>"+i+"</td>\
+						<td>\
+							<img  id='detailimg1' src='http://localhost:9091/getimage?filename="+ encodeURI(obj[i-1].imageName) + "'>\
+						</td>\
+						<td>"+obj[i-1].errType+"</td>\
+						<td>"+obj[i-1].errName+"</td>\
+						<td>1</td>\
+					</tr>"            
+
+				}
+
+			$('#table_detail').children('tbody').append(str);
+		}
+
+		//切换显示模式
+		function switch_show_mode(obj) {
+			switch (obj.value) {
+				case "0":
+					render_laypage(3);
+					//show_mode_thumbnail(3,1);
+					break;
+				case "1":
+					render_laypage(4);
+					//show_mode_thumbnail(4,1);
+					break;
+				case "2":
+					render_laypage(5);
+					//show_mode_thumbnail(5,1);
+					break;
+				case "3":
+					render_list_laypage(30);
+					break;
+				case "4":
+					window.location.href = "big_image.html?" + "batchno=" + encodeURI(batchno) + "&mode=" + 4;
+
+					break;
+
+			}
+		}
+
+	</script>
+</body>
+
+</html>

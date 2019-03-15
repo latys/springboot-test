@@ -39,6 +39,15 @@ public class DErritemlist implements Serializable {
 	private Integer exCodeNum;
 
 	private Integer groupNo;
+	
+
+
+	private String productType;
+	
+	
+	private String imageName;
+	
+	private String errLocation;
 
 	private String guid;
 
@@ -93,6 +102,31 @@ public class DErritemlist implements Serializable {
 	public DErritemlist() {
 	}
 
+	
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getErrLocation() {
+		return errLocation;
+	}
+
+	public void setErrLocation(String errLocation) {
+		this.errLocation = errLocation;
+	}
+	
 	public int getId() {
 		return this.id;
 	}
@@ -307,6 +341,30 @@ public class DErritemlist implements Serializable {
 
 	public void setWorkId(int workId) {
 		this.workId = workId;
+	}
+
+	@Override
+	public String toString() {
+		return "DErritemlist [id=" + id + ", ctPicCount=" + ctPicCount + ", dRecordCreationDate=" + dRecordCreationDate
+				+ ", errCode=" + errCode + ", errCodeNum=" + errCodeNum + ", errType=" + errType + ", exCode=" + exCode
+				+ ", exCodeNum=" + exCodeNum + ", groupNo=" + groupNo + ", productType=" + productType + ", imageName="
+				+ imageName + ", errLocation=" + errLocation + ", guid=" + guid + ", idBatch=" + idBatch + ", idCode="
+				+ idCode + ", missionName=" + missionName + ", pages=" + pages + ", resultFnId=" + resultFnId
+				+ ", resultInspId=" + resultInspId + ", resultManualId=" + resultManualId + ", static_=" + static_
+				+ ", statusCode=" + statusCode + ", temp1=" + temp1 + ", temp2=" + temp2 + ", temp3=" + temp3
+				+ ", temp4=" + temp4 + ", temp5=" + temp5 + ", tmFinish=" + tmFinish + ", tmStart=" + tmStart
+				+ ", workId=" + workId + ", getId()=" + getId() + ", getCtPicCount()=" + getCtPicCount()
+				+ ", getDRecordCreationDate()=" + getDRecordCreationDate() + ", getErrCode()=" + getErrCode()
+				+ ", getErrCodeNum()=" + getErrCodeNum() + ", getErrType()=" + getErrType() + ", getExCode()="
+				+ getExCode() + ", getExCodeNum()=" + getExCodeNum() + ", getGroupNo()=" + getGroupNo() + ", getGuid()="
+				+ getGuid() + ", getIdBatch()=" + getIdBatch() + ", getIdCode()=" + getIdCode() + ", getMissionName()="
+				+ getMissionName() + ", getPages()=" + getPages() + ", getResultFnId()=" + getResultFnId()
+				+ ", getResultInspId()=" + getResultInspId() + ", getResultManualId()=" + getResultManualId()
+				+ ", getStatic_()=" + getStatic_() + ", getStatusCode()=" + getStatusCode() + ", getTemp1()="
+				+ getTemp1() + ", getTemp2()=" + getTemp2() + ", getTemp3()=" + getTemp3() + ", getTemp4()="
+				+ getTemp4() + ", getTemp5()=" + getTemp5() + ", getTmFinish()=" + getTmFinish() + ", getTmStart()="
+				+ getTmStart() + ", getWorkId()=" + getWorkId() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
 	}
 
 }

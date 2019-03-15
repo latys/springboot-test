@@ -13,6 +13,8 @@ import java.util.Date;
 @Table(name="d_errcount")
 @NamedQuery(name="DErrcount.findAll", query="SELECT d FROM DErrcount d")
 public class DErrcount implements Serializable {
+	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -149,5 +151,11 @@ public class DErrcount implements Serializable {
 	public void setWorkId(int workId) {
 		this.workId = workId;
 	}
-
+	@Override
+	public String toString() {
+		return "DErrcount [id=" + id + ", codeEnd=" + codeEnd + ", codeStart=" + codeStart + ", dRecordCreationDate="
+				+ dRecordCreationDate + ", groupNO=" + groupNO + ", index=" + index + ", pageNum=" + pageNum
+				+ ", temp1=" + temp1 + ", temp2=" + temp2 + ", temp3=" + temp3 + ", temp4=" + temp4 + ", temp5=" + temp5
+				+ ", workId=" + workId + "]";
+	}
 }

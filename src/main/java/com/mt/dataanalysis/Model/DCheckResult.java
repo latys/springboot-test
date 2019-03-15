@@ -2,6 +2,10 @@ package com.mt.dataanalysis.Model;
 
 public class DCheckResult {
 
+	@Override
+	public String toString() {
+		return "DCheckResult [batchno=" + batchno + ", totalCount=" + totalCount + ", errCount=" + errCount + "]";
+	}
 	private String batchno;
 	private Integer totalCount;
 	private Integer errCount;

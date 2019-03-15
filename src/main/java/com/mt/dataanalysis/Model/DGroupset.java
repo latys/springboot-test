@@ -13,6 +13,7 @@ import java.util.Date;
 @Table(name="d_groupset")
 @NamedQuery(name="DGroupset.findAll", query="SELECT d FROM DGroupset d")
 public class DGroupset implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -211,5 +212,16 @@ public class DGroupset implements Serializable {
 	public void setUseFlag(int useFlag) {
 		this.useFlag = useFlag;
 	}
+	
+	@Override
+	public String toString() {
+		return "DGroupset [id=" + id + ", dateTime=" + dateTime + ", depNum=" + depNum + ", dRecordCreationDate="
+				+ dRecordCreationDate + ", firstCode=" + firstCode + ", groupNO=" + groupNO + ", head=" + head
+				+ ", pages=" + pages + ", picPath=" + picPath + ", productType=" + productType + ", sRecordCreator="
+				+ sRecordCreator + ", static_=" + static_ + ", stopRequery=" + stopRequery + ", temp1=" + temp1
+				+ ", temp2=" + temp2 + ", temp3=" + temp3 + ", temp4=" + temp4 + ", temp5=" + temp5 + ", useFlag="
+				+ useFlag + "]";
+	}
+
 
 }

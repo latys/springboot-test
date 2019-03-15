@@ -11,10 +11,10 @@
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
 
 		<script src="../../static/js/echarts.min.js"></script>
-	    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-        <script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js"></script>
+	    <script src="../../static/js/jquery-1.12.4.js"></script>
+        <script src="../../static/js/jquery.min.js"></script>
+        <script src="../../static/js/jquery-migrate-1.2.1.min.js"></script>
+		<script src="../../static/js/jquery.xdomainrequest.min.js"></script>
 
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
@@ -27,9 +27,9 @@
 		<div class="weadmin-nav">
 			<span class="layui-breadcrumb">
         <a href="./list.html">首页</a>
-        <a href="./list.html">数据统计</a>
+        <a href="./list.html">批次信息</a>
         <a>
-          <cite>最近批次</cite></a>
+          最近批次</a>
       </span>
 			<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -41,11 +41,14 @@
 					<!--<div class="layui-inline">
 						<input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
 					</div>-->
-					<div class="layui-inline">
+					<!-- <div class="layui-inline">
 						<input class="layui-input layui-bg-black" placeholder="开始日" name="start" id="start">
+					</div> -->
+					<div class="layui-inline">
+						<input class="layui-input " placeholder="开始日" name="start" id="start">
 					</div>
 					<div class="layui-inline">
-						<input class="layui-input layui-bg-black" placeholder="截止日" name="end" id="end">
+						<input class="layui-input " placeholder="截止日" name="end" id="end">
 					</div>
 				<button class="layui-btn"  lay-filter="sreach" onclick="OnQuery()"><i class="layui-icon">&#xe615;</i></button>
 				</div>
@@ -61,7 +64,7 @@
 
 
 			<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+			<a class="layui-btn layui-btn-primary layui-btn-sm" lay-event="detail">   ---查看---   </a>
 	
 			</script>
 
@@ -157,6 +160,21 @@
 				,page: true
 				,done:function(res, curr, count){
 					//数据的回调用，可不写
+					$('.layui-table-cell').css('font-size','18px');
+					$('.layui-table-cell').css('height','30px');
+
+					var table_main = document.getElementsByClassName('layui-table-main');   //通过class获取table_main
+					if (table_main != null && table_main.length > 0)
+				    {
+						var table1 = table_main[0].getElementsByClassName('layui-table');   //通过class获取table
+						if (table1!= null && table1.length > 0) {
+							var trs = table1[0].querySelectorAll("tr");
+							if (trs != null && trs.length > 0) {
+								trs[0].style.background= '#ff3300';
+							}
+						}
+					}
+
 				}
 			});
 		}
@@ -164,18 +182,22 @@
 
 
 		$(function(){
+
+
 				layui.use('table', function(){
 				var kw='';
 				addData(kw);
-            var table=layui.table;	
-			table.on('tool(tbCheckResult)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-			var data = obj.data //获得当前行数据
-			,layEvent = obj.event; //获得 lay-event 对应的值
-			if(layEvent === 'detail'){
-			    info(data.batchno);
-			} 
-		});
+					var table=layui.table;	
+					table.on('tool(tbCheckResult)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+					var data = obj.data //获得当前行数据
+					,layEvent = obj.event; //获得 lay-event 对应的值
+					if(layEvent === 'detail'){
+						info(data.batchno);
+					} 
+				});
 			});
+
+			
 			 var myChart = echarts.init(document.getElementById('main'));
 			option = {
 				title : {
@@ -237,7 +259,7 @@
         // 基于准备好的dom，初始化echarts实例
 		function info(batchno)
 		{
-			 window.location.href="detail.html?"+"batchno="+encodeURI(batchno);
+			 window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode=0";
 		}
 
 
