@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,11 +58,15 @@ public class MainController {
 	@Autowired  
     private MTPConf mtpconf; 
 	
+	@Autowired
+    JmsTemplate  jmsTemplate;
+	
 	@RequestMapping("/getuser")
     public List<DErritemlist> hello(){
 		
 		
 		List<DErritemlist> erritemlist=res.findAll();
+		jmsTemplate.send("my-destination",new Msg());
     	return erritemlist;
     }
 	

@@ -80,6 +80,7 @@
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
+              <option value="3">3</option>
             </select>
           </div>
         </div>
@@ -93,6 +94,7 @@
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
+              <option value="3">3</option>
             </select>
           </div>
         </div>
@@ -150,7 +152,7 @@
                             <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
                         </div>-->
 
-        <button class="layui-btn" lay-submit="" lay-filter="sreach" onclick="printpage('to_print')">打印</button>
+        <!-- <button class="layui-btn" lay-submit="" lay-filter="sreach" onclick="printpage('to_print')">打印</button> -->
 
       </form>
     </div>
@@ -183,13 +185,51 @@
     var secondGZPos;
     var pageHight=700;
 
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name)  == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
     function printpage(myDiv) {
+      var startDate = $('#start').val();
+      var endDate = $('#end').val();
+      var gz = $('#GZ').val();
+      var firstGZPos = $('#firstGZPos').val();
+      var SecondGZPos = $('#secondGZPos').val();
+      var startCode = $('#startCode').val();
+      var count = $('#printCount').val();
+
       var newstr = document.getElementById(myDiv).innerHTML;
       var oldstr = document.body.innerHTML;
       document.body.innerHTML = newstr;
       window.print();
 
       document.body.innerHTML = oldstr;
+      //location.reload();
+
+      $('#start').val(startDate);
+      $('#end').val(endDate);
+      $('#GZ').val(gz);
+  
+      $('#startCode').val(startCode);
+      $('#printCount').val(count);
      
     }
 
@@ -258,6 +298,27 @@
             $("option[value='已完成']").attr("selected", "selected");
             $("#firstGZPos").val(firstGZPos);
             $('#secondGZPos').val(secondGZPos);
+            if(getCookie("startDate")!="")
+            {
+              $('#start').val(getCookie("startDate"));
+            }
+            if(getCookie("endDate")!="")
+            {
+               $('#end').val(getCookie("endDate"));
+            }
+            if(getCookie("gz")!="")
+            {
+              $('#GZ').val(getCookie("gz"));
+            }
+            if(getCookie("startCode")!="")
+            {
+              $('#startCode').val(getCookie("startCode"));
+            }
+            if(getCookie("count")!="")
+            {
+              $('#printCount').val(getCookie("count"));
+            }
+
             form.render();
 
           },
@@ -286,6 +347,12 @@
       var startCode = $('#startCode').val();
       var count = $('#printCount').val();
       var endCode =parseInt(startCode) + $('#printCount').val() * 500 - 1;
+      setCookie("startDate",startDate,1);
+      setCookie("endDate",endDate,1);
+      setCookie("gz",gz,1);
+      setCookie("startCode",startCode,1);
+      setCookie("count",count,1);
+     
       if (startCode < 0 || endCode > 99999999) {
         alert("打印起始号码设置错误!");
         return;
@@ -333,8 +400,7 @@
             if (i > 2) {
               if (resText[i - 1].indexOf("开始号码") >= 0)
               {
-                
-                
+
                 line=1;
                 if(i!=3)
                 {
@@ -366,7 +432,6 @@
 
                 str += "<p style='padding-top: 40px'>" + resText[i - 1] + "</p>";
               }
-
               else {
                 str += "<p>" + resText[i - 1] + "</p>";
               }
@@ -392,7 +457,7 @@
           layui.use(['layer', 'jquery'], function () {
             var $ = layui.jquery;
             var layer = layui.layer;
-            $('#to_print').css('display', 'block');
+            //$('#to_print').css('display', 'block');
             layer.open({
               type: 1,
               area: '700px',
@@ -402,13 +467,13 @@
               , yes: function (index, layero) {
                 //按钮【按钮一】的回调
                 printpage('to_print');
-
-                layer.close(index);
                 $('#to_print').css('display', 'none');
-               
+                layer.close(index);
+ 
               }
               , btn2: function (index, layero) {
                 $('#to_print').css('display', 'none');
+                
               }
               , cancel: function (index, layero) {
                 $('#to_print').css('display', 'none');

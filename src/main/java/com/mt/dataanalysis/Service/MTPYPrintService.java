@@ -1,7 +1,6 @@
 package com.mt.dataanalysis.Service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class MTPYPrintService {
 	    		List<DErrcount> errors=new ArrayList<>();
 	    		if(gz.length()>=2) {
 	        		errors=mtpyPrintService.res.GetErrCountByDoubleGZ(new Integer(startCode.intValue()+i*500), 
-	        				new Integer(startCode.intValue()+i*500+499), mtpyPrintService.conf.getProductType(), startDate, endDate,j);
+	        				new Integer(startCode.intValue()+i*500+499), mtpyPrintService.conf.getProductType(), startDate, endDate,gz,j);
 	    		}
 	    		else
 	    		{
@@ -168,9 +167,9 @@ public class MTPYPrintService {
 	 							
 	 							StringBuilder str=new StringBuilder(String.format("%06d   第%2d页  %8s   %s",err.getErrCodeNum(),
 	 									    err.getTemp3(),
-	 								      errname,df.format(err.getDRecordCreationDate())));
-	 							str.insert(err.getTemp4(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5(), err.getErrCode().charAt(1));
+	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
 	 							content=str.toString();
 	 						
@@ -180,9 +179,9 @@ public class MTPYPrintService {
 	 							
 	 							StringBuilder str=new StringBuilder(String.format("%07d   第%2d页  %8s   %s",err.getErrCodeNum(),
 	 									    err.getTemp3(),
-	 								      errname,df.format(err.getDRecordCreationDate())));
-	 							str.insert(err.getTemp4(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5(), err.getErrCode().charAt(1));
+	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
 	 							 content=str.toString();
 	 						}
@@ -191,7 +190,7 @@ public class MTPYPrintService {
 	 					{
 	 						content=String.format("%s%08d   第%2d页  %8s   %s",err.getErrCode(),err.getErrCodeNum(),
 	 							err.getTemp3(),
-	 							errname,df.format(err.getDRecordCreationDate()));
+	 							errname,df.format(err.getdRecordCreationDate()));
 	 					}
 	 					line++;
 	 					stopMachineErr.add(content);
@@ -205,9 +204,9 @@ public class MTPYPrintService {
 	 							
 	 							StringBuilder str=new StringBuilder(String.format("%06d   第%2d页  %8s   %s",err.getErrCodeNum(),
 	 									    err.getTemp3(),
-	 								      errname,df.format(err.getDRecordCreationDate())));
-	 							str.insert(err.getTemp4(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5(), err.getErrCode().charAt(1));
+	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
 	 							content=str.toString();
 	 						
@@ -217,10 +216,10 @@ public class MTPYPrintService {
 	 							
 	 							StringBuilder str=new StringBuilder(String.format("%07d   第%2d页  %8s   %s",err.getErrCodeNum(),
 	 									    err.getTemp3(),
-	 								      errname,df.format(err.getDRecordCreationDate())));
-	 							str.insert(err.getTemp4(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5(), err.getErrCode().charAt(1));
-	 							str.insert(str.length(), err.getErrCode().charAt(1));
+	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
+	 							//str.insert(str.length(), err.getErrCode().charAt(1));
 	 							 content=str.toString();
 	 						}
 	 					}
@@ -228,7 +227,7 @@ public class MTPYPrintService {
 	 					{
 	 						content=String.format("%s%08d   第%2d页  %8s   %s",err.getErrCode(),err.getErrCodeNum(),
 	 							err.getTemp3(),
-	 							errname,df.format(err.getDRecordCreationDate()));
+	 							errname,df.format(err.getdRecordCreationDate()));
 	 					}
 	 					line++;
 	 					printContent.add(content);

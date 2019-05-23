@@ -33,30 +33,30 @@ public class DGroupset implements Serializable {
 
 	private String head;
 
-	private int pages;
+	private Integer pages;
 
 	private String picPath;
 
-	private int productType;
+	private Integer productType;
 
 	private String sRecordCreator;
 
 	@Column(name="Static")
 	private String static_;
 
-	private int stopRequery;
+	private Integer stopRequery;
 
 	private String temp1;
 
 	private String temp2;
 
-	private int temp3;
+	private Integer temp3;
 
-	private int temp4;
+	private Integer temp4;
 
-	private int temp5;
+	private Integer temp5;
 
-	private int useFlag;
+	private Integer useFlag;
 
 	public DGroupset() {
 	}

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit4.SpringRunner;
+
 
 import com.mt.dataanalysis.Model.DCheckResult;
 import com.mt.dataanalysis.Model.DErrcount;
@@ -25,7 +25,7 @@ import com.mt.dataanalysis.respository.DErrcount_respository;
 import com.mt.dataanalysis.respository.DGroupset_respository;
 import com.mt.dataanalysis.respository.d_erritemlist_respository;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 public class MtsysApplicationTests {
 
@@ -37,9 +37,9 @@ public class MtsysApplicationTests {
 	@Test
 	public void test1()
 	{
-		 Pageable pr = new PageRequest(0,2);
+		Pageable pr = new PageRequest(0,2);
 		    
-		    List<DGroupset> list = group_res.findAll(pr).getContent();
+		List<DGroupset> list = group_res.findAll(pr).getContent();
 		for(DGroupset l:list)
 		{
 			System.out.println(l.toString());

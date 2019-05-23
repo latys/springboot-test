@@ -37,13 +37,13 @@ public class DErrcount implements Serializable {
 
 	private String temp2;
 
-	private int temp3;
+	private Integer temp3;
 
-	private int temp4;
+	private Integer temp4;
 
-	private int temp5;
+	private Integer temp5;
 
-	private int workId;
+	private Integer workId;
 
 	public DErrcount() {
 	}
