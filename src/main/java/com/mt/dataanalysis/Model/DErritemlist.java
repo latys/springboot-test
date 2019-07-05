@@ -17,7 +17,8 @@ public class DErritemlist implements Serializable {
 
 	@Override
 	public String toString() {
-		return "DErritemlist [id=" + id + ", dRecordCreationDate=" + dRecordCreationDate + ", errClass=" + errClass
+		return "DErritemlist [id=" + id + ", dRecordCreationDate=" + dRecordCreationDate + ", errDescript="
+				+ errDescript + ", algType=" + algType + ", algDescript=" + algDescript + ", errClass=" + errClass
 				+ ", errCode=" + errCode + ", errCodeNum=" + errCodeNum + ", errDep=" + errDep + ", errLocation="
 				+ errLocation + ", errType=" + errType + ", exCode=" + exCode + ", exCodeNum=" + exCodeNum
 				+ ", groupNo=" + groupNo + ", guid=" + guid + ", imageName=" + imageName + ", pages=" + pages
@@ -200,12 +201,46 @@ public class DErritemlist implements Serializable {
 	public void setWorkId(Integer workId) {
 		this.workId = workId;
 	}
+	
+	public String getErrDescript() {
+		return errDescript;
+	}
 
+	public void setErrDescript(String errDescript) {
+		this.errDescript = errDescript;
+	}
+
+	public Integer getAlgType() {
+		return algType;
+	}
+
+	public void setAlgType(Integer algType) {
+		this.algType = algType;
+	}
+
+	public String getAlgDescript() {
+		return algDescript;
+	}
+
+	public void setAlgDescript(String algDescript) {
+		this.algDescript = algDescript;
+	}
+	
+	
 	@Id
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dRecordCreationDate;
+
+	private String  errDescript;
+	
+
+
+	private Integer algType;
+	
+	private String  algDescript;
+
 
 	private Integer errClass;
 

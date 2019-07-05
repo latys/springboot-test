@@ -62,6 +62,57 @@
 		
 
 		<div class="layui-container">
+
+
+			<div class="layui-form layui-col-md12 we-search">
+				<div class="layui-inline">
+				<label class="layui-form-label">算法类型</label>
+				<div class="layui-input-inline">
+						<select name="algType" id="algType" lay-verify="required" >
+						<option value="全部">全部</option>
+					</select>
+				</div>
+				</div>
+				<div class="layui-inline">
+				<label class="layui-form-label">缺陷类型</label>
+				<div class="layui-input-inline">
+						<select name="errType" id="errType" lay-verify="required" >
+						<option value="全部">全部</option>
+					</select>
+				</div>
+				</div>
+				<div class="layui-inline">
+				<label class="layui-form-label">报错等级</label>
+				<div class="layui-input-inline">
+						<select name="errLevel" id="errLevel" lay-verify="required" >
+							<option value="全部">全部</option>
+							<option value="警告">警告</option>
+							<option value="一般">一般</option>
+							<option value="严重">严重</option>
+
+					</select>
+				</div>
+				</div>
+				<div class="layui-inline">
+				<label class="layui-form-label">是否删除</label>
+				<div class="layui-input-inline">
+						<select name="isdelete" id="isdelete" lay-verify="required" >
+						<option value="全部">全部</option>
+						<option value="未删除">未删除</option>
+						<option value="已删除">已删除</option>
+						
+						</select>
+				</div>
+				</div>
+				<div class="layui-inline">
+				<button class="layui-btn" lay-submit lay-filter="formDemo" onclick="queryData()">查询</button>
+
+				</div>
+			</div>
+
+			
+					
+
 	
 			<p style="text-align:center;font-size: 26px" id='page_info'>批次：123456 产品名称：11</p>
 		
@@ -108,29 +159,31 @@
 			  var laypage = layui.laypage;
 				var $$ = layui.jquery;
 				
-			  		jQuery.support.cors = true; 
-						$.ajax({url:"http://localhost:9091/getallbatchnodetail",
-						  data:{"batchno":batchno},
-							type:"POST",
+				    initPage();
+						queryData();
+			  		// jQuery.support.cors = true; 
+						// $.ajax({url:"http://localhost:9091/getallbatchnodetailbyCondition",
+						//   data:{"batchno":batchno},
+						// 	type:"POST",
 					    
-							success:function (resText) {
-								   total_count=resText;
+						// 	success:function (resText) {
+						// 		   total_count=resText;
 									 
-								   laypage.render({
-										elem: 'page'
-										,count: resText
-										,limit:1
-										,jump: function(obj){
-                                        //模拟渲染
-                     show_mode_detail(obj.curr);
+						// 		   laypage.render({
+						// 				elem: 'page'
+						// 				,count: resText
+						// 				,limit:1
+						// 				,jump: function(obj){
+            //                             //模拟渲染
+            //          show_mode_detail(obj.curr);
 										
-										}
-									});
-							},
-							error:function(jqXHR){
-								alert("发生错误"+jqXHR.status);
-								}
-						});
+						// 				}
+						// 			});
+						// 	},
+						// 	error:function(jqXHR){
+						// 		alert("发生错误"+jqXHR.status);
+						// 		}
+						// });
 
 
 						//$('.pannable-image').ImageViewer();
@@ -231,6 +284,122 @@
 			  
 			}).use('layer');
 
+
+			function queryData()
+		{
+			var algType=$("#algType").val();
+			var errType=$('#errType').val();
+			var isdelete=$('#isdelete').val();
+			var errLevel=$('#errLevel').val();
+
+      var laypage = layui.laypage;
+			jQuery.support.cors = true;
+			$.ajax({
+				url: "http://localhost:9091/getallbatchnodetailbyCondition",
+				data:{"batchno":batchno,"algType":algType,"errName":errType,"errLevel":errLevel,"isDelete":isdelete},
+				type: "POST",
+
+				success: function (resText) {
+					total_count = resText;
+					laypage.render({
+										elem: 'page'
+										,count: resText
+										,limit:1
+										,jump: function(obj){
+                                        //模拟渲染
+                     show_mode_detail(obj.curr);
+										
+										}
+									});
+
+					//  laypage.render({
+					// 	elem: 'page'
+					// 	,count: resText
+					// 	,limit:9
+					// 	,jump: function(obj){
+					// 	//模拟渲染
+
+					// 	}
+					// });
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+		}
+
+    //获取下拉列表内容
+		function initPage()
+		{
+			layui.use(['table', 'form'], function ()
+			{
+				jQuery.support.cors = true;
+	
+
+
+			$.ajax({
+				url: "http://localhost:9091/getAllErrtype",
+				
+				type: "POST",
+
+				success: function (data) {
+					console.info(data);
+					if(data!=undefined&&data!=null&&data!=""){
+
+                    var html="";
+                    for(var i=0;i<data.length;i++){
+                      
+												console.info(data[i]);
+												var index=i+1;
+												html+="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                         
+                     }
+                    $("#errType").append(html);
+                }
+                //重新渲染select
+								var form=layui.form;
+                form.render('select');
+
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+
+			$.ajax({
+				url: "http://localhost:9091/getAllAlgtype",
+				
+				type: "POST",
+
+				success: function (data) {
+					console.info(data);
+					if(data!=undefined&&data!=null&&data!=""){
+
+                    var html="";
+                    for(var i=0;i<data.length;i++){
+                      
+												console.info(data[i]);
+												var index=i+1;
+												html+="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                         
+                     }
+                    $("#algType").append(html);
+                }
+                //重新渲染select
+								var form=layui.form;
+                form.render('select');
+
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+			});
+			
+		}
 			function getParam(paramName) { 
 				var reg = new RegExp('(^|&)' + paramName + '=([^&]*)(&|$)', 'i');
 				var r = window.location.search.substr(1).match(reg);
@@ -242,20 +411,27 @@
 		
 			function show_mode_detail(page)
 			{
+
+				var algType=$("#algType").val();
+			var errType=$('#errType').val();
+			var isdelete=$('#isdelete').val();
+			var errLevel=$('#errLevel').val();
+
+
 				$('#image_table').css('display','none');
 				$('#table_detail').css('display','none');	
 				$('#detail').css('display','inline-block');
 						
 			
 				layui.use(['layer','jquery'], function(){
-					var $ = layui.jquery;
+				var $ = layui.jquery;
 				var layer = layui.layer;
 						
-						
+				   $('#detailimgspan').html("");
 						jQuery.support.cors = true; 
-						$.ajax({url:"http://localhost:9091/getbatchnodetail",
+						$.ajax({url:"http://localhost:9091/getErrDetailbyCondition",
 							type:"POST",
-							data:{"batchno":batchno,"page":page,"limit":1},
+							data: { "batchno": batchno, "algType":algType,"errName":errType,"errLevel":errLevel,"isDelete":isdelete,"page": page, "limit": 1 },
 							success:function (resText) {
 								// for(var i=1;i<=resText.length;i++)
 								if(resText.length>0)
@@ -266,11 +442,12 @@
 									// $('#detailimg').attr('src','http://localhost:9091/getimage?filename='+(resText[0]));
 									// $('#detailimg').attr('data-high-res-src','http://localhost:9091/getimage?filename='+(resText[0]));
 									
-									$('#detailimgspan').html(decodeURI(resText[0]));
+									$('#detailimgspan').html(decodeURI(resText[0].imageName));
+									console.info(decodeURI(resText[0].imageName));
 
 									var viewer = ImageViewer($('.pannable-image'));
 								
-									viewer.load('http://localhost:9091/getimage?filename='+encodeURI(resText[0]), 'http://localhost:9091/getimage?filename='+encodeURI(resText[0]));
+									viewer.load('http://localhost:9091/getimage?filename='+encodeURI(resText[0].imageName), 'http://localhost:9091/getimage?filename='+encodeURI(resText[0].imageName));
 									
 								  
 								}

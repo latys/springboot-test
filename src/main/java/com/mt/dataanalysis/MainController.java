@@ -36,10 +36,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mt.dataanalysis.Model.DCheckResult;
 import com.mt.dataanalysis.Model.DErritemDTO;
 import com.mt.dataanalysis.Model.DErritemlist;
+import com.mt.dataanalysis.Model.DErrtypeinfo;
 import com.mt.dataanalysis.Model.DGroupset;
+import com.mt.dataanalysis.Service.DErritemlistService;
 import com.mt.dataanalysis.Service.ICheckResultService;
 import com.mt.dataanalysis.Service.MTPYCheckResult;
 import com.mt.dataanalysis.Service.MTPYPrintService;
+import com.mt.dataanalysis.respository.DErrtypeinfo_respository;
 import com.mt.dataanalysis.respository.DGroupset_respository;
 import com.mt.dataanalysis.respository.d_erritemlist_respository;
 
@@ -54,6 +57,13 @@ public class MainController {
 	
 	@Autowired  
     private DGroupset_respository group_res; 
+	
+	@Autowired
+	private DErrtypeinfo_respository errType_res;
+	
+	@Autowired
+	private DErritemlistService erritemservice;
+	
 	
 	@Autowired  
     private MTPConf mtpconf; 
@@ -90,6 +100,19 @@ public class MainController {
 		
 		return erritemlists.size();
     }
+	
+	
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping("/getallbatchnodetailbyCondition")
+    public int getallbatchnodetail(String batchno,String algType,String errName,String errLevel,String isDelete){
+
+		System.out.println(batchno);
+		
+		
+		return erritemservice.getallbatchnodetail(batchno, algType, errName, errLevel, isDelete);
+    }
+	
+	
 	
 	
 	@CrossOrigin(origins = "*", maxAge = 3600)
@@ -144,6 +167,16 @@ public class MainController {
 	
 		return erritemlists;
     }
+	
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	@RequestMapping("/getErrDetailbyCondition")
+	List<DErritemDTO> getErrDetail(int batchno,String algType,String errName,String errLevel,String isDelete,
+	   		 @RequestParam(required=false,defaultValue="1") int page,
+		            @RequestParam(required=false,defaultValue="15") int limit){
+		return erritemservice.getErrDetail(batchno, algType, errName, errLevel, isDelete, page, limit);
+	}
+	
+	
 	
 	@CrossOrigin(origins = "*", maxAge = 3600) 
 	@RequestMapping("/showdata")
@@ -234,6 +267,29 @@ public class MainController {
 	 {
 		 return msg;
 	 }
+	 
+	 /**
+	 * 获取所有缺陷类型
+	 * @return
+	 */
+	 @CrossOrigin(origins = "*", maxAge = 3600) 
+	 @RequestMapping("/getAllErrtype")
+	 public List<String> getAllErrtype()
+	 {
+		 return res.GetErrDescript();
+	 }
+	 
+	 /**
+	 * 获取所有算法类型
+	 * @return
+	 */
+	 @CrossOrigin(origins = "*", maxAge = 3600) 
+	 @RequestMapping("/getAllAlgtype")
+	 public List<String> getAllALgtype()
+	 {
+		 return res.GetALgDescript();
+	 }
+	 
 	 
 
 }

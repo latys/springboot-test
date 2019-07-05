@@ -64,7 +64,137 @@
 	<div class="weadmin-body">
 
 
+
 		<div class="layui-container">
+
+			<form class="layui-form" action="">
+				<div class="layui-form-item">
+				  <div class="layui-inline">
+					<label class="layui-form-label">算法类型</label>
+					<div class="layui-input-inline">
+					    <select name="algType" id="algType" lay-verify="required" >
+							<option value="全部">全部</option>
+						</select>
+					</div>
+				  </div>
+				  <div class="layui-inline">
+					<label class="layui-form-label">缺陷类型</label>
+					<div class="layui-input-inline">
+					    <select name="errType" id="errType" lay-verify="required" >
+							<option value="全部">全部</option>
+						</select>
+					</div>
+				  </div>
+				  <div class="layui-inline">
+					<label class="layui-form-label">报错等级</label>
+					<div class="layui-input-inline">
+					    <select name="errLevel" id="errLevel" lay-verify="required" >
+								<option value="全部">全部</option>
+								<option value="警告">警告</option>
+								<option value="一般">一般</option>
+								<option value="严重">严重</option>
+
+						</select>
+					</div>
+				  </div>
+				  <div class="layui-inline">
+					<label class="layui-form-label">是否删除</label>
+					<div class="layui-input-inline">
+					    <select name="isdelete" id="isdelete" lay-verify="required" >
+							<option value="全部">全部</option>
+							<option value="未删除">未删除</option>
+							<option value="已删除">已删除</option>
+							
+						  </select>
+					</div>
+				  </div>
+				  <div class="layui-inline">
+					<button class="layui-btn" lay-submit lay-filter="formDemo" onclick="queryData()">查询</button>
+	
+				  </div>
+	
+				</div>
+		  
+				<!-- <div class="layui-form-item">
+				  <div class="layui-inline">
+					<label class="layui-form-label">冠字</label>
+					<div class="layui-input-inline">
+					  <input type="text" name="GZ" id="GZ" required lay-verify="required" placeholder="冠字" autocomplete="off"
+						class="layui-input">
+					</div>
+				  </div>
+		  
+				  <div class="layui-inline">
+					<label class="layui-form-label">第一冠字位置</label>
+					<div class="layui-input-inline">
+					  <select name="firstGZPos" id="firstGZPos" lay-verify="required" disabled="disabled">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					  </select>
+					</div>
+				  </div>
+		  
+				</div>
+				<div class="layui-form-item">
+				  <div class="layui-inline">
+					<label class="layui-form-label">第二冠字位置</label>
+					<div class="layui-input-inline">
+					  <select name="SecondGZPos" id="secondGZPos" lay-verify="required" disabled="disabled">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					  </select>
+					</div>
+				  </div>
+				</div>
+				<div class="layui-form-item">
+				  <div class="layui-inline">
+					<label class="layui-form-label">起始号码</label>
+					<div class="layui-input-inline">
+					  <input type="text" name="startCode" id="startCode" required lay-verify="required" placeholder="起始号码"
+						autocomplete="off" class="layui-input">
+		  
+					</div>
+		  
+					<label class="layui-form-mid layui-word-aux">千</label>
+				  </div>
+				  <div class="layui-inline">
+					<label class="layui-form-label">打印千数[500张]</label>
+					<div class="layui-input-inline">
+					  <input type="text" name="printCount" id="printCount" required lay-verify="required" placeholder=""
+						autocomplete="off" class="layui-input">
+					</div>
+				  </div>
+				</div> -->
+				<!-- <div class="layui-form-item">
+								  <label class="layui-form-label">起始号码</label>
+								  <div class="layui-input-inline">
+									<input type="text" name="startCode" id="startCode" required  lay-verify="required" placeholder="起始号码" autocomplete="off" class="layui-input">
+									
+								  </div>
+								  
+								  <label class="layui-form-mid layui-word-aux" >千</label>
+								  
+						  </div>
+						  <div class="layui-form-item">
+								  <label class="layui-form-label">打印千数[500张]</label>
+								  <div class="layui-input-block">
+									<input type="text" name="printCount" id="printCount" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+								  </div>
+								  
+						  </div> -->
+		  
+				<!-- <div class="layui-form-item">
+				  <div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="formDemo" onclick="GenPrintContent()">立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				  </div>
+				</div> -->
+			  </form>
+
 
 			<p style="text-align:center;font-size: 26px" id='page_info'>批次：123456 产品名称：11</p>
 
@@ -327,10 +457,25 @@
 		// })
 
 
-		layui.use('laypage', function () {
+		layui.use(['laypage','form'], function () {
 			var laypage = layui.laypage;
 			var $$ = layui.jquery;
+			var form = layui.form;
 
+        
+        form.on('submit(formDemo)', function (data) {
+
+          console.log(data.elem)                                 //被执行事件的元素DOM对象，一般为button对象
+
+          console.log(data.form)                                 //被执行提交的form对象，一般在存在form标签时才会返回
+
+          console.log(data.field)                                 //当前容器的全部表单字段，名值对形式：{name: value}
+
+          return false;                                                //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+
+        });
+
+			initPage();
 			jQuery.support.cors = true;
 			$.ajax({
 				url: "http://localhost:9091/getallbatchnodetail",
@@ -373,6 +518,128 @@
 			});
 
 		});
+
+		function queryData()
+		{
+			var algType=$("#algType").val();
+			var errType=$('#errType').val();
+			var isdelete=$('#isdelete').val();
+			var errLevel=$('#errLevel').val();
+
+			jQuery.support.cors = true;
+			$.ajax({
+				url: "http://localhost:9091/getallbatchnodetailbyCondition",
+				data:{"batchno":batchno,"algType":algType,"errName":errType,"errLevel":errLevel,"isDelete":isdelete},
+				type: "POST",
+
+				success: function (resText) {
+					total_count = resText;
+					switch (mode) {
+						case '0':
+							render_laypage(3);
+							break;
+						case '1':
+							render_laypage(4);
+							break;
+						case '2':
+							render_laypage(5);
+							break;
+						case '3':
+							render_list_laypage(30);
+							break;
+						default:
+							render_laypage(3);
+							break;
+					}
+
+					//  laypage.render({
+					// 	elem: 'page'
+					// 	,count: resText
+					// 	,limit:9
+					// 	,jump: function(obj){
+					// 	//模拟渲染
+
+					// 	}
+					// });
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+		}
+
+    //获取下拉列表内容
+		function initPage()
+		{
+			layui.use(['table', 'form'], function ()
+			{
+				jQuery.support.cors = true;
+	
+
+
+			$.ajax({
+				url: "http://localhost:9091/getAllErrtype",
+				
+				type: "POST",
+
+				success: function (data) {
+					console.info(data);
+					if(data!=undefined&&data!=null&&data!=""){
+
+                    var html="";
+                    for(var i=0;i<data.length;i++){
+                      
+												console.info(data[i]);
+												var index=i+1;
+												html+="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                         
+                     }
+                    $("#errType").append(html);
+                }
+                //重新渲染select
+								var form=layui.form;
+                form.render('select');
+
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+
+			$.ajax({
+				url: "http://localhost:9091/getAllAlgtype",
+				
+				type: "POST",
+
+				success: function (data) {
+					console.info(data);
+					if(data!=undefined&&data!=null&&data!=""){
+
+                    var html="";
+                    for(var i=0;i<data.length;i++){
+                      
+												console.info(data[i]);
+												var index=i+1;
+												html+="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                         
+                     }
+                    $("#algType").append(html);
+                }
+                //重新渲染select
+								var form=layui.form;
+                form.render('select');
+
+				},
+				error: function (jqXHR) {
+					alert("发生错误" + jqXHR.status);
+				}
+			});
+
+			});
+			
+		}
 
 
 		function getParam(paramName) {
@@ -512,13 +779,18 @@
 				var img_width = table_width / n;
 				var window_height = window.innerHeight - 150;
 				var row = Math.ceil(window_height / img_width);
+				
 				laypage.render({
 					elem: 'page'
 					, count: total_count
+					, curr:1
 					, limit: row * n
 					, jump: function (obj) {
 						//模拟渲染
+						
+						
 						show_mode_thumbnail(n, obj.curr);
+						
 					}
 				});
 			}
@@ -553,6 +825,15 @@
 
 		function show_mode_thumbnail(n, page) {
 
+			var algType=$("#algType").val();
+			var errType=$('#errType').val();
+			var isdelete=$('#isdelete').val();
+			var errLevel=$('#errLevel').val();
+
+			if(page<1)
+				page=1;
+			//alert("第"+page+"页");
+			console.debug("第"+page+"页");
 			$('#table_detail').css('display', 'none');
 			$('#image_table').css('display', 'block');
 			$('#detail').empty();
@@ -575,7 +856,7 @@
 					var spanid = "span" + id;
 					str += "	<td style='width:" + img_width + "px;height:" + img_width + "px'>\n\
 							<div style='position: relative'>\n\
-							<img id='"+ imgid + "' src=''  style='width:" + img_width + "px;height:" + img_width + "px' onclick='detailLayer(this)'/>\n\
+							<img id='"+ imgid + "' src=''  style='width:" + img_width + "px;height:" + img_width + "px' />\n\
 							<span id='"+ spanid + "' style='position: absolute; top: 0; left: 0;color:red'></span>\n\
 							</div>\n\
 						</td>"
@@ -591,9 +872,9 @@
 
 				jQuery.support.cors = true;
 				$.ajax({
-					url: "http://localhost:9091/getErrDetail",
+					url: "http://localhost:9091/getErrDetailbyCondition",
 					type: "POST",
-					data: { "batchno": batchno, "page": page, "limit": n * row },
+					data: { "batchno": batchno, "algType":algType,"errName":errType,"errLevel":errLevel,"isDelete":isdelete,"page": page, "limit": n * row },
 					success: function (resText) {
 						for (var i = 1; i <= resText.length; i++) {
 							var imgid = "#img" + i;
@@ -618,14 +899,20 @@
 			$('#table_detail').css('display', 'block');
 			$('#image_table').css('display', 'none');
 			$('#detail').empty();
+
+			var algType=$("#algType").val();
+			var errType=$('#errType').val();
+			var isdelete=$('#isdelete').val();
+			var errLevel=$('#errLevel').val();
+
 			layui.use(['layer', 'jquery'], function () {
 				var $ = layui.jquery;
 				var layer = layui.layer;
 				jQuery.support.cors = true;
 				$.ajax({
-					url: "http://localhost:9091/getErrDetail",
+					url: "http://localhost:9091/getErrDetailbyCondition",
 					type: "POST",
-					data: { "batchno": batchno, "page": page, "limit": n },
+					data: { "batchno": batchno,"algType":algType,"errName":errType,"errLevel":errLevel,"isDelete":isdelete, "page": page, "limit": n },
 					success: function (resText) {
 						show_table(resText);
 					},
@@ -643,7 +930,7 @@
 
 			var str = "";
 			for (var i = 1; i <= obj.length; i++) {
-                str += "<tr>\
+            str += "<tr>\
 						<td>\
 							<div class='layui-unselect layui-form-checkbox' lay-skin='primary' data-id='2'><i class='layui-icon'>&#xe605;</i></div>\
 						</td>\
@@ -665,21 +952,26 @@
 		function switch_show_mode(obj) {
 			switch (obj.value) {
 				case "0":
+				  mode='0';
 					render_laypage(3);
 					//show_mode_thumbnail(3,1);
 					break;
 				case "1":
+				  mode='1';
 					render_laypage(4);
 					//show_mode_thumbnail(4,1);
 					break;
 				case "2":
+				  mode='2';
 					render_laypage(5);
 					//show_mode_thumbnail(5,1);
 					break;
 				case "3":
+				  mode='3';
 					render_list_laypage(30);
 					break;
 				case "4":
+				  mode='4';
 					window.location.href = "big_image.html?" + "batchno=" + encodeURI(batchno) + "&mode=" + 4;
 
 					break;
