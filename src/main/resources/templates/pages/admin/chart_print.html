@@ -165,12 +165,12 @@
     <div class="layui-row">
       <h3 id="print_header">密特四号机电子护照因私号码在线检测</h1>
     </div>
-    <div class="layui-row" style="padding-top: 40px">
+    <div class="layui-row" style="padding-top: 35px">
       <p id="print_time">打印时间：2019-03-01--2019-03-02</p>
 
     </div>
 
-    <div class="layui-row" id="print_content" class="page-break" style="padding-top: 40px">
+    <div class="layui-row" id="print_content" class="page-break" style="padding-top: 35px">
 
 
     </div>
@@ -376,7 +376,7 @@
           var total_page=1;
           for ( i = 1; i <= resText.length; i++) {
 
-            if(line>=25)
+            if(line>30)
             {
               line=1;
               str+="<br></br>";
@@ -401,7 +401,9 @@
               if (resText[i - 1].indexOf("开始号码") >= 0)
               {
 
-                line=1;
+                line=5;
+                if(i>10)
+                   line=1;
                 if(i!=3)
                 {
                   str+="<br></br>";
@@ -420,7 +422,7 @@
                       break;
                   }
                 }
-                total_page=Math.ceil((j-i)/25.0);
+                total_page=Math.ceil((j-i)/30.0);
                 
                 var page_id="page_"+page;
                 str+="<div class='page-break' id='"+page_id+"'>";
@@ -428,12 +430,46 @@
                 
               }
 
-              if (resText[i - 1].indexOf("未打印号码范围") >= 0 || resText[i - 1].indexOf("检测结果") >= 0) {
-
-                str += "<p style='padding-top: 40px'>" + resText[i - 1] + "</p>";
+              if (resText[i - 1].indexOf("未检号码范围") >= 0 || resText[i - 1].indexOf("检测结果") >= 0) {
+                
+                str += "<p style='padding-top: 40px; white-space:pre'>" + resText[i - 1] + "</p>";
+                
               }
               else {
-                str += "<p>" + resText[i - 1] + "</p>";
+                var cols=resText[i-1].split(";")
+                if(cols.length==4)
+                {
+                  str+="<div style='clear:both'>"
+                  for( j=0;j<cols.length;j++)
+                  {
+                    if(j==0||j==3)
+                    {
+                      str +="<div style='width:90px;float:left'>";
+                    }
+                    else if(j==1)
+                    {
+                      str +="<div style='width:70px;float:left'>";
+                    }
+                    else if(j==2)
+                    {
+                      str +="<div style='width:120px;float:left'>";
+                    }
+                    
+
+                    str += "<p style='padding-top: 5px; white-space:pre'> " + cols[j] + "</p>";
+                    str +="</div>";
+
+                  }
+                  str+="</div>"
+
+                }
+                else
+                {
+                  str += "<p style='padding-top: 5px; white-space:pre'> " + resText[i-1] + "</p>";
+                }
+        
+
+                console.info(resText[i-1]);
               }
 
             }

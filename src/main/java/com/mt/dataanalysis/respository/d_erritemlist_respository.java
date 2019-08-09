@@ -28,7 +28,7 @@ public interface d_erritemlist_respository extends JpaRepository<DErritemlist, I
 	  @Query(value = "SELECT new com.mt.dataanalysis.Model.DErritemDTO( b.errName,a.errType,a.errLocation,a.imageName) FROM DErritemlist a,DErrtypeinfo b where a.groupNo=?1 and a.errType=b.errType Order by ?#{#pr}")
 	  public List<DErritemDTO> GetErrByGroupNo(Integer groupNo,Pageable pr);
 	  
-	  @Query(value = "SELECT distinct(a.errDescript) FROM DErritemlist a ")
+	  @Query(value = "SELECT distinct(a.errDescript) FROM DErritemlist a where a.errDescript is not null")
 	  public List<String> GetErrDescript();
 	  
 	  @Query(value = "SELECT distinct(a.algDescript) FROM DErritemlist a ")

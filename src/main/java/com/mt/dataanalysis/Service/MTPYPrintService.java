@@ -78,7 +78,7 @@ public class MTPYPrintService {
 	    	}
 	    	
 
-	    	printContent.add("未打印号码范围:");
+	    	printContent.add("未检号码范围:");
 	    	line+=3;
 	    	for(int j=0;j<mtpyPrintService.conf.getWorkstationCount();j++)
 	    	{
@@ -129,7 +129,7 @@ public class MTPYPrintService {
 	 	    	{
 	 	    		if(unchecked[j])
 	 	    		{
-	 	    			content=String.format("  第%d工位未测",j+1);
+	 	    			content=String.format(" 第%d工位未测",j+1);
 	 	    			line++;
 	 	    			printContent.add(content);
 	 	    		}
@@ -150,13 +150,18 @@ public class MTPYPrintService {
 	 	    {
 	 	    	for(DErritemlist err:checkedCodes)
 	 	    	{
-	 	    		String content="";
-	 	    		String errname="";
-	 	    		List<DErrtypeinfo> errtypeinfos=mtpyPrintService.errType_res.findByErrType(err.getErrType());
-	 	    		if(errtypeinfos!=null&&errtypeinfos.size()>0)
-	 	    		{
-	 	    			errname=errtypeinfos.get(0).getErrName();
-	 	    		}
+					 String content="";
+					 String errCode="";
+					 String pageNum="";
+					 String dateTime="";
+					 
+					//修改数据库在表中增加了缺陷类型描述，不需要再从缺陷表中进行查询
+	 	    		String errname=err.getErrDescript();
+	 	    		// List<DErrtypeinfo> errtypeinfos=mtpyPrintService.errType_res.findByErrType(err.getErrType());
+	 	    		// if(errtypeinfos!=null&&errtypeinfos.size()>0)
+	 	    		// {
+	 	    		// 	errname=errtypeinfos.get(0).getErrName();
+	 	    		// }
 	 	    	  	//204是停机  显示号码为检测号码而不是预期号 Add[9/20/2016 WZS]
 	 				if ( err.getErrType()== 204)
 	 				{
@@ -165,34 +170,38 @@ public class MTPYPrintService {
 	 						if (err.getErrCodeNum() == 0)
 	 						{
 	 							
-	 							StringBuilder str=new StringBuilder(String.format("%06d   第%2d页  %8s   %s",err.getErrCodeNum(),
-	 									    err.getTemp3(),
-	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getErrCodeNum()));
 	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
 	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
-	 							content=str.toString();
+	 							errCode=str.toString();
+	 							
 	 						
 	 						}
 	 						else
 	 						{
 	 							
-	 							StringBuilder str=new StringBuilder(String.format("%07d   第%2d页  %8s   %s",err.getErrCodeNum(),
-	 									    err.getTemp3(),
-	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getErrCodeNum()));
 	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
 	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
-	 							 content=str.toString();
+	 							errCode=str.toString();
+	 							
 	 						}
 	 					}
 	 					else
 	 					{
-	 						content=String.format("%s%08d   第%2d页  %8s   %s",err.getErrCode(),err.getErrCodeNum(),
-	 							err.getTemp3(),
-	 							errname,df.format(err.getdRecordCreationDate()));
+	 						errCode=String.format("%s%08d",err.getErrCode(),err.getErrCodeNum());
 	 					}
 	 					line++;
+	 					pageNum=String.format("第%d页", err.getTemp3().intValue());
+	 					String s1=String.format("%-12s", errCode);
+	 					String s2=String.format("%-10s", pageNum);
+	 					String s3=String.format("%-20s", errname);
+	 					
+	 					String s4=String.format("%-25s", err.getdRecordCreationDate().toString());
+	 					content=s1+";"+s2+";"+s3+";"+s4;
+	 					System.out.println(content);
 	 					stopMachineErr.add(content);
 	 				}
 	 				else
@@ -202,34 +211,34 @@ public class MTPYPrintService {
 	 						if (err.getErrCodeNum() == 0)
 	 						{
 	 							
-	 							StringBuilder str=new StringBuilder(String.format("%06d   第%2d页  %8s   %s",err.getErrCodeNum(),
-	 									    err.getTemp3(),
-	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getErrCodeNum()));
 	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
 	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							str.insert(str.length(), err.getErrCode().charAt(1));
-	 							content=str.toString();
+	 							errCode=str.toString();
 	 						
 	 						}
 	 						else
 	 						{
-	 							
-	 							StringBuilder str=new StringBuilder(String.format("%07d   第%2d页  %8s   %s",err.getErrCodeNum(),
-	 									    err.getTemp3(),
-	 								      errname,df.format(err.getdRecordCreationDate())));
+	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getErrCodeNum()));
 	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
 	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
 	 							//str.insert(str.length(), err.getErrCode().charAt(1));
-	 							 content=str.toString();
+	 							errCode=str.toString();
 	 						}
 	 					}
 	 					else
 	 					{
-	 						content=String.format("%s%08d   第%2d页  %8s   %s",err.getErrCode(),err.getErrCodeNum(),
-	 							err.getTemp3(),
-	 							errname,df.format(err.getdRecordCreationDate()));
+	 						errCode=String.format("%s%08d",err.getErrCode(),err.getErrCodeNum());
 	 					}
 	 					line++;
+	 					pageNum=String.format("第%d页", err.getTemp3().intValue());
+	 					String s1=String.format("%-12s", errCode);
+	 					String s2=String.format("%-10s", pageNum);
+	 					String s3=String.format("%-20s", errname);
+	 					String s4=String.format("%-25s", err.getdRecordCreationDate().toString());
+	 					content=s1+";"+s2+";"+s3+";"+s4;
+	 					System.out.println(content);
 	 					printContent.add(content);
 	 				}
 	 	    	}
