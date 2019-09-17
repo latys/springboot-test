@@ -67,6 +67,8 @@ public class MTPYPrintService {
 		    {
 		    	unchecked[k]=true;
 		    }
+	        //14工位不打印
+	        unchecked[14]=false;
 	    	int checkworkstationCount=0;
 	    	line=0;
 	    	Map<String,String> map=until.GetCodeFromDigit(gz, startCode.intValue()+i*500, startCode.intValue()+i*500+499, firstGZPos, secondGZPos);
@@ -114,6 +116,9 @@ public class MTPYPrintService {
 			    	
 			    	}
 		    	
+		    		//14工位不打印
+		    		if(err.getWorkId()==13)
+		    			continue;
 					String content=String.format(" 第%2d工位  页码: %2d  %s-- %s ", j+1,err.getPageNum(),strCodeStart,strCodeEnd);
 					line++;
 					printContent.add(content);
@@ -129,6 +134,7 @@ public class MTPYPrintService {
 	 	    	{
 	 	    		if(unchecked[j])
 	 	    		{
+
 	 	    			content=String.format(" 第%d工位未测",j+1);
 	 	    			line++;
 	 	    			printContent.add(content);
@@ -144,9 +150,11 @@ public class MTPYPrintService {
 	 	    }
 	 	    
 	 	    printContent.add("号码检测结果：");
-	 	    line++;
-	 	    List<DErritemlist> checkedCodes=mtpyPrintService.erritem_res.GetErritemList(new Integer(startCode.intValue()+i*500), new Integer(startCode.intValue()+i*500+499), gz, mtpyPrintService.conf.getProductType(), startDate, endDate);
-	 	    if(checkedCodes.size()>0)
+			line++;
+			System.out.println((startCode.intValue()+i*500)+"--"+(startCode.intValue()+i*500+499));
+	 	    List<DErritemlist> checkedCodes=mtpyPrintService.erritem_res.GetErritemList((startCode.intValue()+i*500), (startCode.intValue()+i*500+499), gz, mtpyPrintService.conf.getProductType(), startDate, endDate);
+			List<String> norepeat_checkedCodes=new ArrayList<String>();
+			if(checkedCodes.size()>0)
 	 	    {
 	 	    	for(DErritemlist err:checkedCodes)
 	 	    	{
@@ -154,82 +162,100 @@ public class MTPYPrintService {
 					 String errCode="";
 					 String pageNum="";
 					 String dateTime="";
+
+					 String code= String.format("%07d",err.getExCodeNum());
+					 if(norepeat_checkedCodes.contains(code))
+					 {
+						 continue;
+					 }
+					 else
+					 {
+						 norepeat_checkedCodes.add(code);
+					 }
 					 
 					//修改数据库在表中增加了缺陷类型描述，不需要再从缺陷表中进行查询
 	 	    		String errname=err.getErrDescript();
+	 	    		
+	 	    		//芯片报警和第14工位号码检测结果不打印
+	 	    		if (err.getErrType()==206||(err.getWorkId()==14)) {
+						continue;
+					}
 	 	    		// List<DErrtypeinfo> errtypeinfos=mtpyPrintService.errType_res.findByErrType(err.getErrType());
 	 	    		// if(errtypeinfos!=null&&errtypeinfos.size()>0)
 	 	    		// {
 	 	    		// 	errname=errtypeinfos.get(0).getErrName();
 	 	    		// }
 	 	    	  	//204是停机  显示号码为检测号码而不是预期号 Add[9/20/2016 WZS]
-	 				if ( err.getErrType()== 204)
+//	 				if ( err.getErrType()== 204)
+//	 				{
+//	 					if (err.getErrCode()==null||err.getErrCode()=="") {
+//	 						System.out.println(err);
+//						}
+//	 					if(err.getErrCode().length()>=2)
+//	 					{
+//	 						if (err.getErrCodeNum() == 0)
+//	 						{
+//	 							
+//	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getExCodeNum()));
+//	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+//	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
+//	 							str.insert(str.length(), err.getErrCode().charAt(1));
+//	 							errCode=str.toString();
+//	 							
+//	 						
+//	 						}
+//	 						else
+//	 						{
+//	 							
+//	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getExCodeNum()));
+//	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
+//	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
+//	 							str.insert(str.length(), err.getErrCode().charAt(1));
+//	 							errCode=str.toString();
+//	 							
+//	 						}
+//	 					}
+//	 					else
+//	 					{
+//	 						errCode=String.format("%s%08d",err.getErrCode(),err.getExCodeNum());
+//	 					}
+//	 					line++;
+//	 					pageNum=String.format("第%d页", err.getTemp3().intValue());
+//	 					String s1=String.format("%-12s", errCode);
+//	 					String s2=String.format("%-10s", pageNum);
+//	 					String s3=String.format("%-20s", errname);
+//	 					
+//	 					String s4=String.format("%-25s", err.getdRecordCreationDate().toString());
+//	 					content=s1+";"+s2+";"+s3+";"+s4;
+//	 					System.out.println(content);
+//	 					stopMachineErr.add(content);
+//	 				}
+//	 				else
 	 				{
-	 					if(err.getErrCode().length()>=2)
+	 					if(err.getExCode().length()>=2)
 	 					{
-	 						if (err.getErrCodeNum() == 0)
+	 						if (err.getExCodeNum() == 0)
 	 						{
 	 							
-	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getErrCodeNum()));
-	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
-	 							str.insert(str.length(), err.getErrCode().charAt(1));
+	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getExCodeNum()));
+	 							str.insert(err.getTemp4().intValue(), err.getExCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getExCode().charAt(1));
+	 							str.insert(str.length(), err.getExCode().charAt(1));
 	 							errCode=str.toString();
-	 							
 	 						
 	 						}
 	 						else
 	 						{
-	 							
-	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getErrCodeNum()));
-	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
-	 							str.insert(str.length(), err.getErrCode().charAt(1));
-	 							errCode=str.toString();
-	 							
-	 						}
-	 					}
-	 					else
-	 					{
-	 						errCode=String.format("%s%08d",err.getErrCode(),err.getErrCodeNum());
-	 					}
-	 					line++;
-	 					pageNum=String.format("第%d页", err.getTemp3().intValue());
-	 					String s1=String.format("%-12s", errCode);
-	 					String s2=String.format("%-10s", pageNum);
-	 					String s3=String.format("%-20s", errname);
-	 					
-	 					String s4=String.format("%-25s", err.getdRecordCreationDate().toString());
-	 					content=s1+";"+s2+";"+s3+";"+s4;
-	 					System.out.println(content);
-	 					stopMachineErr.add(content);
-	 				}
-	 				else
-	 				{
-	 					if(err.getErrCode().length()>=2)
-	 					{
-	 						if (err.getErrCodeNum() == 0)
-	 						{
-	 							
-	 							StringBuilder str=new StringBuilder(String.format("%06d",err.getErrCodeNum()));
-	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
-	 							str.insert(str.length(), err.getErrCode().charAt(1));
-	 							errCode=str.toString();
-	 						
-	 						}
-	 						else
-	 						{
-	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getErrCodeNum()));
-	 							str.insert(err.getTemp4().intValue(), err.getErrCode().charAt(0));
-	 							str.insert(err.getTemp5().intValue(), err.getErrCode().charAt(1));
+	 							StringBuilder str=new StringBuilder(String.format("%07d",err.getExCodeNum()));
+	 							str.insert(err.getTemp4().intValue(), err.getExCode().charAt(0));
+	 							str.insert(err.getTemp5().intValue(), err.getExCode().charAt(1));
 	 							//str.insert(str.length(), err.getErrCode().charAt(1));
 	 							errCode=str.toString();
 	 						}
 	 					}
 	 					else
 	 					{
-	 						errCode=String.format("%s%08d",err.getErrCode(),err.getErrCodeNum());
+	 						errCode=String.format("%s%08d",err.getExCode(),err.getExCodeNum());
 	 					}
 	 					line++;
 	 					pageNum=String.format("第%d页", err.getTemp3().intValue());

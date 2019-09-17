@@ -25,16 +25,16 @@ public class CodeUntil {
 		
 		for(DErrcount err :(errs))
 		{
-			if(err.getCodeEnd()%500<=endto||err.getCodeEnd()<err.getCodeStart())
+			if(err.getCodeEnd()<err.getCodeStart())
 			{
 				
 			}
-			else if(err.getCodeEnd()>endcode&&endcode!=0)
-			{
-				startfrom=501;
-				endto=499;
-				break;
-			}
+//			else if(err.getCodeEnd()>endcode&&endcode!=0)
+//			{
+//				startfrom=501;
+//				endto=499;
+//				break;
+//			}
 			else {
 				int iCodeStart=err.getCodeStart();
 				if(iCodeStart<startcode)
@@ -50,6 +50,8 @@ public class CodeUntil {
 					DErrcount tmp=new DErrcount();
 					tmp.setCodeStart(iCodeStart/500*500+startfrom);
 					tmp.setCodeEnd(iCodeStart-GAdd);
+					tmp.setPageNum(err.getPageNum());
+					tmp.setWorkId(err.getWorkId());
 					unCheckedCodes.add(tmp);
 				}
 				
@@ -86,6 +88,8 @@ public class CodeUntil {
 					DErrcount tmp=new DErrcount();
 					tmp.setCodeStart(ip1);
 					tmp.setCodeEnd(ip2);
+					tmp.setPageNum(errs.get(count-1).getPageNum());
+					tmp.setWorkId(errs.get(count-1).getWorkId());
 					unCheckedCodes.add(tmp);
 				}
 			}

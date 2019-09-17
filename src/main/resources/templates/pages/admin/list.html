@@ -152,6 +152,7 @@
 				,cols: [[
 					{type: 'checkbox', fixed: 'left'}
 					,{field:'batchno', title: '批次', sort: true} //sort：true页面可进行排序操作
+					,{field:'startCode', title: '起始号', sort: true} 
 					,{field:'totalCount', title: '总数'}
 					,{field:'errCount', title: '缺陷数', sort: true}
 					,{fixed: 'right', align:'center', toolbar: '#barDemo'}
@@ -259,7 +260,7 @@
         // 基于准备好的dom，初始化echarts实例
 		function info(batchno)
 		{
-			 window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode=0";
+			 window.location.href="detail.html?"+"batchno="+encodeURI(batchno)+"&mode=3";
 		}
 
 

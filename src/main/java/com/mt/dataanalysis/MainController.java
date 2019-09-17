@@ -170,7 +170,7 @@ public class MainController {
 	
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	@RequestMapping("/getErrDetailbyCondition")
-	List<DErritemDTO> getErrDetail(int batchno,String algType,String errName,String errLevel,String isDelete,
+	List<DErritemlist> getErrDetail(int batchno,String algType,String errName,String errLevel,String isDelete,
 	   		 @RequestParam(required=false,defaultValue="1") int page,
 		            @RequestParam(required=false,defaultValue="15") int limit){
 		return erritemservice.getErrDetail(batchno, algType, errName, errLevel, isDelete, page, limit);

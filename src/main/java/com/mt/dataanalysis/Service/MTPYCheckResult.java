@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 import com.mt.dataanalysis.Model.DCheckResult;
@@ -54,7 +56,8 @@ public  class MTPYCheckResult implements ICheckResultService {
 		// TODO Auto-generated method stub
 		
 		List<DCheckResult> res=new ArrayList<DCheckResult>();
-	    Pageable pr = new PageRequest(page-1,limit);
+		Sort sort = new Sort(Direction.DESC, "groupNO");
+	    Pageable pr = new PageRequest(page-1,limit,sort);
 	    
 	    List<DGroupset> list = MTPYcheckResult.group_res.findAll(pr).getContent();
         
@@ -72,6 +75,7 @@ public  class MTPYCheckResult implements ICheckResultService {
 			dcr.setErrCount(err_count);
 			dcr.setBatchno(Integer.toString(ls.getGroupNO()));
 			dcr.setTotalCount(1000);
+			dcr.setStartCode(ls.getHead()+ls.getFirstCode());
 			res.add(dcr);
 	    }
 
@@ -91,9 +95,9 @@ public  class MTPYCheckResult implements ICheckResultService {
 	@Override
 	public int GetAllCheckResultCount() {
 		// TODO Auto-generated method stub
-		List<DCheckResult> res=new ArrayList<DCheckResult>();
-	    Pageable pr = new PageRequest(0,10);
-	    return pr.getPageSize();
+		//List<DCheckResult> res=new ArrayList<DCheckResult>();
+		return (int)MTPYcheckResult.group_res.count();
+	   
 	}
 	
 }

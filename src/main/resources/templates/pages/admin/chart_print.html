@@ -161,7 +161,7 @@
 
   </div>
 
-  <div id="to_print" style="margin-left: 30px;display: none;page-break-after:always">
+  <div id="to_print" style="margin-left: 6px;display: none;page-break-after:always">
     <div class="layui-row">
       <h3 id="print_header">密特四号机电子护照因私号码在线检测</h1>
     </div>
@@ -224,6 +224,9 @@
       document.body.innerHTML = oldstr;
       //location.reload();
 
+
+      $('#firstGZPos').val(firstGZPos);
+      $('#secondGZPos').val(SecondGZPos);
       $('#start').val(startDate);
       $('#end').val(endDate);
       $('#GZ').val(gz);
@@ -262,6 +265,31 @@
         var form = layui.form;
         $(".layui-form-label").css("width", 110);
         getConf();
+        var date=new Date();
+        var tmp=date.getDate();
+        date.setDate(tmp-1);
+        var year=date.getFullYear();
+        var month=date.getMonth()+1;
+        var day=date.getDate();
+        if(month<10)
+          month="0"+month;
+       
+        if(day<10)
+          day="0"+day;
+        var start_date=year+"-"+month+"-"+day;
+        $("#start").val(start_date);
+        date.setDate(tmp+1);
+        year=date.getFullYear();
+        month=date.getMonth()+1;
+        day=date.getDate();
+        
+        if(day<10)
+          day="0"+day;
+        var end_date=year+"-"+month+"-"+day;
+        $("#end").val(end_date);
+
+       
+        console.log(start_date) ;
         
         form.on('submit(formDemo)', function (data) {
 
@@ -444,15 +472,15 @@
                   {
                     if(j==0||j==3)
                     {
-                      str +="<div style='width:90px;float:left'>";
+                      str +="<div style='width:80px;float:left'>";
                     }
                     else if(j==1)
                     {
-                      str +="<div style='width:70px;float:left'>";
+                      str +="<div style='width:50px;float:left'>";
                     }
                     else if(j==2)
                     {
-                      str +="<div style='width:120px;float:left'>";
+                      str +="<div style='width:100px;float:left'>";
                     }
                     
 

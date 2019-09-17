@@ -6,16 +6,26 @@ public class DErritemDTO {
 	Integer ErrType;
 	String Errlocation;
 	String imageName;
+	//报错等级
+	Integer ErrClass;
 	
-	public DErritemDTO(String errName, Integer errType, String errlocation, String imageName) {
+	public DErritemDTO(String errName, Integer errType, String errlocation, String imageName,Integer errClass) {
 		super();
 		ErrName = errName;
 		ErrType = errType;
 		Errlocation = errlocation;
+		ErrClass=errClass;
 		this.imageName = imageName;
 	}
 	
 	
+	public Integer getErrClass() {
+		return ErrClass;
+	}
+	public void setErrClass(Integer errClass) {
+		ErrClass = errClass;
+	}
+
 	public String getErrName() {
 		return ErrName;
 	}
@@ -43,7 +53,7 @@ public class DErritemDTO {
 	@Override
 	public String toString() {
 		return "DErritemDTO [ErrName=" + ErrName + ", ErrType=" + ErrType + ", Errlocation=" + Errlocation
-				+ ", imageName=" + imageName + "]";
+				+ ", imageName=" + imageName + ", ErrClass="+ErrClass+"]";
 	}
 	
 

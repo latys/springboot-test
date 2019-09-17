@@ -314,9 +314,14 @@
 			<colgroup>
 				<col width="30">
 				<col width="50">
+				<col width="100">
+				<col width="60">
 				<col width="200">
-				<col width="300">
-				<col width="500">
+				<col width="200">
+				<col width="60">
+				<col width="60">
+				<col width="150">
+				<col width="200">
 				<col>
 			</colgroup>
 			<thead>
@@ -327,6 +332,10 @@
 					</th>
 					<th>ID</th>
 					<th>图像</th>
+					<th>工位</th>
+					<th>预期号</th>
+					<th>识别号</th>
+					<th>页码</th>
 					<th>缺陷类型</th>
 					<th>缺陷描述</th>
 					<th>严重等级</th>
@@ -413,6 +422,8 @@
 		var batchno = decodeURI(getParam('batchno'));
 		var mode = decodeURI(getParam('mode'));
 		$('#page_info').html('批次：' + batchno);
+
+		$('#showModeSelect').val(mode);
 		var cur_page = 1;
 		var total_count = 1;
 
@@ -881,7 +892,7 @@
 							var spanid = "#span" + i;
 							//$(imgid).attr('src',resText[i-1]);
 							
-							$(imgid).attr('src', 'http://localhost:9091/getimage?filename=' + encodeURI(resText[i - 1].imageName)+'&errLocation='+encodeURI(resText[i-1].errlocation));
+							$(imgid).attr('src', 'http://localhost:9091/getimage?filename=' + encodeURI(resText[i - 1].imageName)+'&errLocation='+encodeURI(resText[i-1].errLocation));
 							$(spanid).html(decodeURI(resText[i - 1].imageName));
 
 						}
@@ -938,9 +949,13 @@
 						<td>\
 							<img  id='detailimg1' src='http://localhost:9091/getimage?filename="+ encodeURI(obj[i-1].imageName) + "'>\
 						</td>\
+						<td>"+obj[i-1].workId+"</td>\
+						<td>"+obj[i-1].exCodeNum+"</td>\
+						<td>"+obj[i-1].errCodeNum+"</td>\
+						<td>"+obj[i-1].pages+"</td>\
 						<td>"+obj[i-1].errType+"</td>\
-						<td>"+obj[i-1].errName+"</td>\
-						<td>1</td>\
+						<td>"+obj[i-1].errDescript+"</td>\
+						<td>"+obj[i-1].errClass+"</td>\
 					</tr>"            
 
 				}

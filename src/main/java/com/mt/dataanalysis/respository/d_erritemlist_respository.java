@@ -25,7 +25,7 @@ public interface d_erritemlist_respository extends JpaRepository<DErritemlist, I
 	  public List<DErritemlist> findAll(Specification<DErritemlist> spe);
 	  public Page<DErritemlist> findAll(Specification<DErritemlist> spe,org.springframework.data.domain.Pageable pr);
 	  
-	  @Query(value = "SELECT new com.mt.dataanalysis.Model.DErritemDTO( b.errName,a.errType,a.errLocation,a.imageName) FROM DErritemlist a,DErrtypeinfo b where a.groupNo=?1 and a.errType=b.errType Order by ?#{#pr}")
+	  @Query(value = "SELECT new com.mt.dataanalysis.Model.DErritemDTO( b.errName,a.errType,a.errLocation,a.imageName,a.errClass) FROM DErritemlist a,DErrtypeinfo b where a.groupNo=?1 and a.errType=b.errType Order by ?#{#pr}")
 	  public List<DErritemDTO> GetErrByGroupNo(Integer groupNo,Pageable pr);
 	  
 	  @Query(value = "SELECT distinct(a.errDescript) FROM DErritemlist a where a.errDescript is not null")
@@ -39,8 +39,8 @@ public interface d_erritemlist_respository extends JpaRepository<DErritemlist, I
 	  
 	  
 	  
-	  @Query(value = "SELECT a.*  FROM d_erritemlist a where  exCodeNum between ?1 and ?2 and exCode=?3 and static<>1 and productType=?4  and  dRecordCreationDate between ?5 and ?6 order by exCodeNum,temp3",nativeQuery=true)
-	  public List<DErritemlist> GetErritemList(Integer startCode,Integer endCode,String head,String productType,Date startDate,Date endDate);
+	  @Query(value = "SELECT a.*  FROM d_erritemlist a where  exCodeNum between ?1 and ?2 and exCode=?3 and static<>1 and productType=?4  and  dRecordCreationDate between ?5 and ?6 order by exCodeNum,pages desc,temp3,ErrClass desc",nativeQuery=true)
+	  public List<DErritemlist> GetErritemList(int startCode,int endCode,String head,String productType,Date startDate,Date endDate);
  
 
 }

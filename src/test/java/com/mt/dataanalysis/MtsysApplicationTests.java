@@ -68,19 +68,26 @@ public class MtsysApplicationTests {
 	{
 		List<DErrcount> testData=new ArrayList<>();
 		DErrcount tmp=new DErrcount();
-		tmp.setCodeStart(1000001);
-		tmp.setCodeEnd((1000008));
+		tmp.setCodeStart(5624003);
+		tmp.setCodeEnd((5624147));
+		tmp.setPageNum(2);
+		tmp.setWorkId(1);
+		
 		
 		DErrcount tmp1=new DErrcount();
-		tmp1.setCodeStart(1000005);
-		tmp1.setCodeEnd((1000006));
+		tmp1.setCodeStart(5624149);
+		tmp1.setCodeEnd((5624341));
+		tmp1.setPageNum(2);
+		tmp1.setWorkId(1);
 		
 		DErrcount tmp2=new DErrcount();
-		tmp2.setCodeStart(1000012);
-		tmp2.setCodeEnd((1000014));
+		tmp2.setCodeStart(5624345);
+		tmp2.setCodeEnd((5624497));
+		tmp2.setPageNum(2);
+		tmp2.setWorkId(1);
 		
 		testData.add(tmp);
-		//testData.add(tmp1);
+		testData.add(tmp1);
 		testData.add(tmp2);
 		
 		
@@ -98,7 +105,7 @@ public class MtsysApplicationTests {
 		}
 		
 		CodeUntil until=new CodeUntil();
-		List<DErrcount> rErrcounts=until.getUncheckCode(testData, 1000001, 1000500, 1);
+		List<DErrcount> rErrcounts=until.getUncheckCode(testData, 5624001, 5624500, 2);
 		System.out.println("rErrcounts:"+rErrcounts.size());
 		for(DErrcount r: rErrcounts)
 		{

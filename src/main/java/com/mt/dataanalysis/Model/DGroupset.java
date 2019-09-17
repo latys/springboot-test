@@ -27,7 +27,7 @@ public class DGroupset implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dRecordCreationDate;
 
-	private int firstCode;
+	private String firstCode;
 
 	private int groupNO;
 
@@ -93,11 +93,11 @@ public class DGroupset implements Serializable {
 		this.dRecordCreationDate = dRecordCreationDate;
 	}
 
-	public int getFirstCode() {
+	public String getFirstCode() {
 		return this.firstCode;
 	}
 
-	public void setFirstCode(int firstCode) {
+	public void setFirstCode(String firstCode) {
 		this.firstCode = firstCode;
 	}
 

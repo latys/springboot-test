@@ -118,15 +118,15 @@ public class DErritemlistService {
     }
     
     
-    public List<DErritemDTO> getErrDetail(int batchno,String algType,String errName,String errLevel,String isDelete,
+    public List<DErritemlist> getErrDetail(int batchno,String algType,String errName,String errLevel,String isDelete,
    		 @RequestParam(required=false,defaultValue="1") int page,
 	            @RequestParam(required=false,defaultValue="15") int limit){
 
     	if(res==null) {
     		System.out.println("res is null");
-    		return new ArrayList<DErritemDTO>();
+    		return new ArrayList<DErritemlist>();
     	}
-    	Sort sort = new Sort(Direction.ASC, "errClass");
+    	Sort sort = new Sort(Direction.ASC,"ExCodeNum").and(new Sort(Direction.DESC, "errClass"));
 	    Pageable pr = new PageRequest(page-1,limit,sort);
 		List<DErritemlist> erritemlists= res.findAll(new Specification<DErritemlist>() {
 
@@ -195,20 +195,20 @@ public class DErritemlistService {
 //			}
 //		}
 		
-	    List<DErritemDTO> erritemDtos=new ArrayList<>();
-	    for(DErritemlist erritemlist:erritemlists)
-	    {
-//	    	String ErrorName="";
-//	    	if(errTypeMap.containsKey(new Integer(erritemlist.getErrType())))
-//	    	{
-//	    		ErrorName=errTypeMap.get(new Integer(erritemlist.getErrType()));
-//	    	}
-	    	DErritemDTO erritemDto=new DErritemDTO(erritemlist.getErrDescript(),erritemlist.getErrType(),erritemlist.getErrLocation(),erritemlist.getImageName());
+//	    List<DErritemDTO> erritemDtos=new ArrayList<>();
+//	    for(DErritemlist erritemlist:erritemlists)
+//	    {
+////	    	String ErrorName="";
+////	    	if(errTypeMap.containsKey(new Integer(erritemlist.getErrType())))
+////	    	{
+////	    		ErrorName=errTypeMap.get(new Integer(erritemlist.getErrType()));
+////	    	}
+//	    	DErritemDTO erritemDto=new DErritemDTO(erritemlist.getErrDescript(),erritemlist.getErrType(),erritemlist.getErrLocation(),erritemlist.getImageName(),erritemlist.getErrClass());
+//
+//	    	erritemDtos.add(erritemDto);
+//	    }
 
-	    	erritemDtos.add(erritemDto);
-	    }
-
-		return erritemDtos;
+		return erritemlists;
    }
 	
 }
